@@ -1,0 +1,10 @@
+#edit-button {
+    margin-left: 1em;
+    height: fit-content;
+    width: fit-content;
+}
+
+#container {
+    display: flex;
+    align-items: center;
+}

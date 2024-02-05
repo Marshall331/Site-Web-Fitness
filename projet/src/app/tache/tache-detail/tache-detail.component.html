@@ -1,0 +1,18 @@
+<div *ngIf="this.etatChargement == 'fait'">
+  <div id="container" class="d-inline-flex">
+    <div class="card bg-secondary mb-3" style="max-width: 20rem;">
+      <span class="badge bg-success" style="font-size: 20px;" [ngClass]="{
+        'bg-warning': tache.etat === 'à faire',
+        'bg-info': tache.etat === 'en cours',
+        'bg-success': tache.etat === 'terminée'
+      }">{{ tache.etat }}</span>
+      <div class="card-header">#{{ tache.id }} {{ tache.nom }}</div>
+      <p class="card-text" style="text-align: center">{{ tache.memo }}</p>
+    </div>
+    <button id="edit-button" class="btn btn-outline-dark" routerLink="/tache/edit/{{ tache.id }}">
+      <i class="fa-solid fa-pen-to-square fa-lg"></i>
+    </button>
+  </div>
+  <hr>
+  <a routerLink="/taches" class="btn btn-outline-primary">Retour à la liste des tâches</a>
+</div>

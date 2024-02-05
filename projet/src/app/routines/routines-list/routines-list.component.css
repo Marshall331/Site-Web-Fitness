@@ -1,0 +1,43 @@
+.custom-height {
+  height: 45px;
+}
+
+#txt-loading {
+  margin-right: 15px;
+  margin-top: 10px;
+}
+
+#container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+#lab-etat {
+  font-size: 20px;
+  min-width: fit-content;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 25px;
+}
+
+#search-bar {
+  max-width: 100%;
+}
+
+#choix-etat {
+  max-width: max-content;
+  margin-right: 20px;
+}
+
+.largeur {
+  width: 100%;
+}
+
+#checkbox {
+  margin-right: 15px;
+}
+
+.right-margin {
+  margin-right: 20px;
+}
