@@ -1,0 +1,25 @@
+<li class="list-group-item" [ngClass]="{
+    'bg-danger': routine.status === etatRoutine.INACTIVE,
+    'bg-success': routine.status === etatRoutine.ACTIVE,
+  }">
+  <div class="d-flex justify-content-between">
+    <p>{{ routine.name }}</p>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-outline-dark" routerLink="/routine/{{ routine.id }}">
+        <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+      </button>&nbsp;
+      <button class="btn btn-outline-dark" routerLink="/routine/edit/{{ routine.id }}">
+        <i class="fa-solid fa-pen-to-square fa-lg"></i>
+      </button>&nbsp;
+      <button class="btn btn-outline-dark" (click)="onSupprime()">
+        <i class="fa-solid fa-trash"></i>
+      </button>&nbsp;
+      <div class="form-check form-switch switch-right">
+        <input class="form-check-input" (click)="updateStatus($event)" type="checkbox" id="flexSwitchCheckChecked"
+          [checked]="routine.status === etatRoutine.ACTIVE" />
+      </div>
+      <input class="form-check-input switch-right" type="checkbox" value="" id="flexCheckChecked" [checked]="isSelected"
+        (change)="onCheckboxChange($event)" />
+    </div>
+  </div>
+</li>

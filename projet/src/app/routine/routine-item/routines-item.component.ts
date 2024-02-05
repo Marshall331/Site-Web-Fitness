@@ -14,7 +14,7 @@ export class RoutineItemComponent {
   @Input()
   public routine: Routine = new Routine();
   readonly etatRoutine = EtatRoutine;
-  
+
   @Input() isSelected: boolean = false;
   @Output() checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -27,48 +27,31 @@ export class RoutineItemComponent {
     this.checkboxChange.emit(event.target.checked);
   }
 
-  onProgress(): void {
-    // switch (this.routine.status) {
-    //   case EtatRoutine.INACTIVE:
-    //     this.tache.etat = EtatRouti;
-    //     break;
-    //   case EtatRoutine.ACTIVE:
-    //     this.tache.etat = EtatTache.TERMINEE;
-    // }
-    // this.updateTache();
-  }
-
-  updateStatus($event:Event): void {
-    switch (this.tache.etat) {
-      case EtatTache.TERMINEE:
-        this.tache.etat = EtatTache.ENCOURS;
-        break;
-      case EtatTache.ENCOURS:
-        this.tache.etat = EtatTache.AFAIRE;
-        break;
+  updateStatus(event: any): void {
+    if (event.target.checked) {
+      this.routine.status = EtatRoutine.ACTIVE;
     }
-    this.updateTache();
-  }
-
-  private updateTache(): void {
-    let Observable = this.routineService.updateTache(this.routine);
+    else {
+      this.routine.status = EtatRoutine.INACTIVE;
+    }
+    let Observable = this.routineService.updateRoutine(this.routine);
     Observable.subscribe({
       error: err => {
-        window.alert("Erreur lors de la sauvegarde.\nCode d'erreur : " + err)
+        Swal.fire("Erreur lors de la sauvegarde.\nCode d'erreur : " + err, '', 'error')
       }
     })
-    // this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/taches')); Inutile car s'il y avait de nombreuses taches, le fait que la page se recharge ne serait pas l'idéal
+    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
   }
 
   onSupprime(): void {
     Swal.fire({
-      title: "Voulez vous réellement supprimer cette tâche ?",
+      title: "Voulez vous réellement supprimer cette routine ?",
       showDenyButton: true,
       confirmButtonText: "Supprimer",
       denyButtonText: `Annuler`
     }).then((result) => {
       if (result.isConfirmed) {
-        let Observable = this.routineService.deleteTache(this.routine);
+        let Observable = this.routineService.deleteRoutine(this.routine);
         Observable.subscribe({
           next: routine => {
             Swal.fire("Routine supprimée !", "", "success");

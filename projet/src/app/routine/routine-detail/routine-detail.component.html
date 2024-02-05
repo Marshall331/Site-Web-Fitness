@@ -1,0 +1,23 @@
+<div *ngIf="this.etatChargement == 'fait'">
+  <div id="container" class="d-inline-flex">
+    <div class="card bg-secondary mb-3" style="max-width: 20rem">
+      &nbsp;Créé / éditée le {{ routine.creationDate | date }}
+      <span class="badge bg-success" style="font-size: 20px" [ngClass]="{
+          'bg-danger': routine.status === 'inactive',
+          'bg-success': routine.status === 'active'
+        }">{{ routine.status }}</span>
+      <div class="card-header">#{{ routine.id }} {{ routine.name }}</div>
+
+      <p class="card-text" style="text-align: center">
+        {{ routine.description }}
+      </p>
+
+    </div>
+    <button id="edit-button" class="btn btn-outline-dark" routerLink="/routine/edit/{{ routine.id }}">
+      <i class="fa-solid fa-pen-to-square fa-lg"></i>&nbsp;Modifier
+    </button>
+  </div><hr>
+  <app-exercice-list [routineId]="routine.id"></app-exercice-list>
+  <hr />
+  <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des tâches</a>
+</div>

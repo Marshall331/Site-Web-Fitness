@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EtatChargement } from 'src/app/models/chargement';
 import { EtatTache, Tache } from 'src/app/models/tache';
+import { ExerciceService } from 'src/app/services/exercice.service';
 import { TacheService } from 'src/app/services/tache.service';
 import Swal from 'sweetalert2';
 

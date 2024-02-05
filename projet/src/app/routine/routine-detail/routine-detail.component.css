@@ -1,4 +1,6 @@
 #edit-button {
+    font-size: 16px;
+    border-radius: 5px;
     margin-left: 1em;
     height: fit-content;
     width: fit-content;
