@@ -1,0 +1,484 @@
+{
+    "routines": [
+        {
+            "id": 1,
+            "name": "Routine Matinale",
+            "description": "Routine pour réveiller le corps et l'esprit.",
+            "creationDate": "2024-01-15",
+            "status": "active"                        
+        },
+        {
+            "id": 2,
+            "name": "Force du code",
+            "description": "Puissance algorithmique et tonus binaire.",
+            "creationDate": "2024-02-01",
+            "status": "active"                        
+        },
+        {
+            "id": 3,
+            "name": "Routine de Flexibilité",
+            "description": "Augmente la flexibilité et réduit le stress.",
+            "creationDate": "2024-02-04",
+            "status": "active"                        
+        },
+        {
+            "id": 4,
+            "name": "Cardio Intensif",
+            "description": "Séance de cardio pour améliorer l'endurance et brûler des calories.",
+            "creationDate": "2024-02-10",
+            "status": "active"
+          },
+          {
+            "id": 5,
+            "name": "Puissance et Agilité",
+            "description": "Augmente la puissance musculaire et l'agilité.",
+            "creationDate": "2024-02-20",
+            "status": "inactive"
+          },
+          {
+            "id": 6,
+            "name": "Mobilité et Équilibre",
+            "description": "Exercices pour améliorer la mobilité et l'équilibre.",
+            "creationDate": "2024-03-01",
+            "status": "active"
+          },
+          {
+            "id": 7,
+            "name": "Endurance Musculaire",
+            "description": "Renforcement de l'endurance des principaux groupes musculaires.",
+            "creationDate": "2024-03-10",
+            "status": "active"
+          },
+          {
+            "id": 8,
+            "name": "Défi du Guerrier",
+            "description": "Routine avancée pour tester les limites de force et d'endurance.",
+            "creationDate": "2024-03-20",
+            "status": "inactive"
+          },
+          {
+            "id": 9,
+            "name": "Relaxation Profonde",
+            "description": "Exercices de relaxation pour réduire le stress et améliorer le sommeil.",
+            "creationDate": "2024-04-01",
+            "status": "active"
+          }        
+    ],
+    "exercises": [
+        {
+            "id": 1,
+            "routineId": 1,
+            "name": "Pompes",
+            "repetitions": 20,
+            "weight": 0
+        },
+        {
+            "id": 2,
+            "routineId": 1,
+            "name": "Squats",
+            "repetitions": 15,
+            "weight": 0
+        },
+        {
+            "id": 3,
+            "routineId": 2,
+            "name": "Pompes Binaires",
+            "repetitions": 10,
+            "weight": 50
+        },
+        {
+            "id": 4,
+            "routineId": 2,
+            "name": "Rotation d'Algorithme",
+            "repetitions": 8,
+            "weight": 40
+        },
+        {
+            "id": 5,
+            "routineId": 3,
+            "name": "Sprint de Compilation",
+            "repetitions": 1,
+            "weight": 0
+        },
+        {
+            "id": 6,
+            "routineId": 3,
+            "name": "Étirements des bras",
+            "repetitions": 1,
+            "weight": 0
+        },
+        {
+            "id": 7,
+            "routineId": 3,
+            "name": "Yoga",
+            "repetitions": 1,
+            "weight": 0
+        },
+        {
+            "id": 8,
+            "routineId": 4,
+            "name": "Course sur place",
+            "repetitions": 1,
+            "weight": 0
+          },
+          {
+            "id": 9,
+            "routineId": 4,
+            "name": "Jumping Jacks",
+            "repetitions": 30,
+            "weight": 0
+          },
+          {
+            "id": 10,
+            "routineId": 5,
+            "name": "Sprints",
+            "repetitions": 10,
+            "weight": 0
+          },
+          {
+            "id": 11,
+            "routineId": 5,
+            "name": "Cônes d'agilité",
+            "repetitions": 3,
+            "weight": 0
+          },
+          {
+            "id": 12,
+            "routineId": 6,
+            "name": "Yoga - Pose du guerrier",
+            "repetitions": 1,
+            "weight": 0
+          },
+          {
+            "id": 13,
+            "routineId": 6,
+            "name": "Pilates - Roll Up",
+            "repetitions": 10,
+            "weight": 0
+          },
+          {
+            "id": 14,
+            "routineId": 7,
+            "name": "Cyclisme",
+            "repetitions": 1,
+            "weight": 0
+          },
+          {
+            "id": 15,
+            "routineId": 7,
+            "name": "Rameur",
+            "repetitions": 1,
+            "weight": 0
+          },
+          {
+            "id": 16,
+            "routineId": 8,
+            "name": "Soulevé de Terre",
+            "repetitions": 5,
+            "weight": 60
+          },
+          {
+            "id": 17,
+            "routineId": 8,
+            "name": "Push-ups avec claque",
+            "repetitions": 20,
+            "weight": 0
+          },
+          {
+            "id": 18,
+            "routineId": 9,
+            "name": "Méditation",
+            "repetitions": 1,
+            "weight": 0
+          },
+          {
+            "id": 19,
+            "routineId": 9,
+            "name": "Étirements doux",
+            "repetitions": 5,
+            "weight": 0
+          }        
+    ],
+    "exerciseTypes": [
+        {
+            "id":1	,
+            "name": "Arm Circles"
+        },
+        {
+            "id":2	,
+            "name": "Bear Crawls"
+        },
+        {
+            "id":3	,
+            "name": "Bench Press"
+        },
+        {
+            "id":4	,
+            "name": "Bicep Curls"
+        },
+        {
+            "id":5	,
+            "name": "Bicycle Crunches"
+        },
+        {
+            "id":6	,
+            "name": "Bird Dog"
+        },
+        {
+            "id":7	,
+            "name": "Box Jumps"
+        },
+        {
+            "id":8	,
+            "name": "Burpees"
+        },
+        {
+            "id":9	,
+            "name": "Calf Raises"
+        },
+        {
+            "id":10	,
+            "name": "Chest Fly"
+        },
+        {
+            "id":11	,
+            "name": "Clavier Flex"
+        },
+        {
+            "id":12	,
+            "name": "Cônes d'agilité"
+        },
+        {
+            "id":13	,
+            "name": "Course sur place"
+        },
+        {
+            "id":14	,
+            "name": "Crunches"
+        },
+        {
+            "id":15	,
+            "name": "Cyclisme"
+        },
+        {
+            "id":16	,
+            "name": "Deadlifts"
+        },
+        {
+            "id":17	,
+            "name": "Donkey Kicks"
+        },
+        {
+            "id":18	,
+            "name": "Dumbbell Rows"
+        },
+        {
+            "id":19	,
+            "name": "Étirements des bras"
+        },
+        {
+            "id":20	,
+            "name": "Étirements des jambes"
+        },
+        {
+            "id":21	,
+            "name": "Étirements doux"
+        },
+        {
+            "id":22	,
+            "name": "Fencing"
+        },
+        {
+            "id":23	,
+            "name": "Flutter Kicks"
+        },
+        {
+            "id":24	,
+            "name": "Gladiateur du Clavier"
+        },
+        {
+            "id":25	,
+            "name": "Glute Bridge"
+        },
+        {
+            "id":26	,
+            "name": "Guerrier Pixel"
+        },
+        {
+            "id":27	,
+            "name": "Hackathon Stretch"
+        },
+        {
+            "id":28	,
+            "name": "High Knees"
+        },
+        {
+            "id":29	,
+            "name": "Jumping Jacks"
+        },
+        {
+            "id":30	,
+            "name": "Kettlebell Swings"
+        },
+        {
+            "id":31	,
+            "name": "Lat Pulldowns"
+        },
+        {
+            "id":32	,
+            "name": "Leg Raises"
+        },
+        {
+            "id":33	,
+            "name": "Lunges"
+        },
+        {
+            "id":34	,
+            "name": "Marche du Codeur"
+        },
+        {
+            "id":35	,
+            "name": "Méditation"
+        },
+        {
+            "id":36	,
+            "name": "Mountain Climbers"
+        },
+        {
+            "id":37	,
+            "name": "Overhead Press"
+        },
+        {
+            "id":38	,
+            "name": "Pilates - Roll Up"
+        },
+        {
+            "id":39	,
+            "name": "Plank"
+        },
+        {
+            "id":40	,
+            "name": "Pompes"
+        },
+        {
+            "id":41	,
+            "name": "Pompes Binaires"
+        },
+        {
+            "id":42	,
+            "name": "Pull-ups"
+        },
+        {
+            "id":43	,
+            "name": "Push-ups avec claque"
+        },
+        {
+            "id":44	,
+            "name": "Rameur"
+        },
+        {
+            "id":45	,
+            "name": "Reverse Crunches"
+        },
+        {
+            "id":46	,
+            "name": "Rotation d'Algorithme"
+        },
+        {
+            "id":47	,
+            "name": "Rowing"
+        },
+        {
+            "id":48	,
+            "name": "Russian Twists"
+        },
+        {
+            "id":49	,
+            "name": "Sauts de Déploiement"
+        },
+        {
+            "id":50	,
+            "name": "Shoulder Taps"
+        },
+        {
+            "id":51	,
+            "name": "Side Lunges"
+        },
+        {
+            "id":52	,
+            "name": "Side Plank"
+        },
+        {
+            "id":53	,
+            "name": "Sit-ups"
+        },
+        {
+            "id":54	,
+            "name": "Skaters"
+        },
+        {
+            "id":55	,
+            "name": "Soulevé de terre"
+        },
+        {
+            "id":56	,
+            "name": "Soulevé de Terre"
+        },
+        {
+            "id":57	,
+            "name": "Spin Cycling"
+        },
+        {
+            "id":58	,
+            "name": "Sprint de Compilation"
+        },
+        {
+            "id":59	,
+            "name": "Sprints"
+        },
+        {
+            "id":60	,
+            "name": "Squat Jumps"
+        },
+        {
+            "id":61	,
+            "name": "Squats"
+        },
+        {
+            "id":62	,
+            "name": "Squats debugging"
+        },
+        {
+            "id":63	,
+            "name": "Superman"
+        },
+        {
+            "id":64	,
+            "name": "Surfing jump"
+        },
+        {
+            "id":65	,
+            "name": "Tricep Dips"
+        },
+        {
+            "id":66	,
+            "name": "Tuck Jumps"
+        },
+        {
+            "id":67	,
+            "name": "V-ups"
+        },
+        {
+            "id":68	,
+            "name": "Wall Sit"
+        },
+        {
+            "id":69	,
+            "name": "Yoga"
+        },
+        {
+            "id":70	,
+            "name": "Yoga - Pose du guerrier"
+        }
+    ]
+}

@@ -1,0 +1,4 @@
+{
+    "/routines/:routineId/exercises": "/exercises?routineId=:routineId",
+    "/routines/:routineId/exercises/:exerciseId": "/exercises/:exerciseId"
+}
