@@ -39,7 +39,6 @@ export class ExerciceListComponent implements OnInit {
   ngOnInit(): void {
     this.exercices = this.exerciceService.getExercices();
     this.getExercicesById(this.routineId);
-    this.etatChargement = EtatChargement.FAIT;
   }
 
   getExercicesById(id: number): void {
@@ -55,6 +54,7 @@ export class ExerciceListComponent implements OnInit {
           }
         }
         this.subscribeToExercices();
+        this.etatChargement = EtatChargement.FAIT;
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')

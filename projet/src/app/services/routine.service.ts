@@ -24,8 +24,8 @@ export class RoutineService {
     return this.http.get<Routine>(this.routineAPI + "/" + id);
   }
 
-  addRoutine(nouvelleRoutine: Tache): Observable<Tache> {
-    return this.http.post<Tache>(this.routineAPI, nouvelleRoutine);
+  addRoutine(nouvelleRoutine: Routine): Observable<Routine> {
+    return this.http.post<Routine>(this.routineAPI, nouvelleRoutine);
   }
 
   updateRoutine(routine: Routine): Observable<Routine> {

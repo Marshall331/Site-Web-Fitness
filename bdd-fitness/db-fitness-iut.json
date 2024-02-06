@@ -26,14 +26,14 @@
       "name": "Cardio Intensif",
       "description": "Séance de cardio pour améliorer l'endurance et brûler des calories.",
       "creationDate": "2024-02-10",
-      "status": "active"
+      "status": "inactive"
     },
     {
       "id": 5,
       "name": "Puissance et Agilité",
       "description": "Augmente la puissance musculaire et l'agilité.",
       "creationDate": "2024-02-20",
-      "status": "active"
+      "status": "inactive"
     },
     {
       "id": 6,
@@ -47,14 +47,14 @@
       "name": "Endurance Musculaire",
       "description": "Renforcement de l'endurance des principaux groupes musculaires.",
       "creationDate": "2024-03-10",
-      "status": "active"
+      "status": "inactive"
     },
     {
       "id": 8,
       "name": "Défi du Guerrier",
       "description": "Routine avancée pour tester les limites de force et d'endurance.",
       "creationDate": "2024-03-20",
-      "status": "active"
+      "status": "inactive"
     }
   ],
   "exercises": [

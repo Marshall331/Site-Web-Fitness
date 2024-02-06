@@ -1,8 +1,9 @@
 {
   "dependencies": {
-    "json-server": "^0.17.0"
+    "json-server": "^0.17.0",
+    "start": "^5.1.0"
   },
   "scripts": {
-    "start" : "json-server --delay 500 --watch db-fitness-iut.json --routes routes.json --port 3000"
+    "start": "json-server --delay 500 --watch db-fitness-iut.json --routes routes.json --port 3000"
   }
 }

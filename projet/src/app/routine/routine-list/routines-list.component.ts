@@ -46,13 +46,13 @@ export class RoutineListComponent implements OnInit {
         this.routinesList = routine;
         this.routinesBySearch = this.routinesList;
         this.subscribeToTaches();
+        this.etatChargement = EtatChargement.FAIT;
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des routines.', 'error')
         this.router.navigateByUrl('/routines');
       }
     });
-    this.etatChargement = EtatChargement.FAIT;
   }
 
   updateEtat($event: Event) {

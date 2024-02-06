@@ -7,12 +7,13 @@ import { RoutineDetailComponent } from './routine/routine-detail/routine-detail.
 import { ExerciceDetailComponent } from './exercice/exercice-detail/exercice-detail.component';
 import { ExerciceEditComponent } from './exercice/exercice-edit/exercice-edit.component';
 import { ExerciceListComponent } from './exercice/exercice-list/exercice-list.component';
+import { RoutineEditComponent } from './routine/routine-edit/routine-edit.component';
 
 
 const routes: Routes = [
   { path: 'routine/:id', component: RoutineDetailComponent },
-  { path: 'routine/new', component: TacheEditComponent },
-  { path: 'routine/edit/:id', component: TacheEditComponent },
+  { path: 'routine/new', component: RoutineEditComponent },
+  { path: 'routine/edit/:id', component: RoutineEditComponent },
   { path: 'routines', component: RoutineListComponent },
   { path: 'exercices/:id', component: ExerciceDetailComponent, },
   { path: 'exercice/new', component: ExerciceEditComponent },

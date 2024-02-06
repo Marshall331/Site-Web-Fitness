@@ -15,6 +15,7 @@ import { ExerciceDetailComponent } from './exercice/exercice-detail/exercice-det
 import { ExerciceEditComponent } from './exercice/exercice-edit/exercice-edit.component';
 import { ExerciceListComponent } from './exercice/exercice-list/exercice-list.component';
 import { ExerciceItemComponent } from './exercice/exercice-item/exercice-item.component';
+import { RoutineEditComponent } from './routine/routine-edit/routine-edit.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ExerciceItemComponent } from './exercice/exercice-item/exercice-item.co
     RoutineListComponent,
     RoutineItemComponent,
     RoutineDetailComponent,
+    RoutineEditComponent,
     ExerciceListComponent,
     ExerciceItemComponent,
     ExerciceDetailComponent,
