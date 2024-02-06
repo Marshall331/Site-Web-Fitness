@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EtatChargement } from 'src/app/models/chargement';
-import { EtatRoutine, Routine } from 'src/app/models/routine';
-import { EtatTache, Tache } from 'src/app/models/tache';
-import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 import { Exercice } from 'src/app/models/exercice';
@@ -58,7 +55,7 @@ export class ExerciceListComponent implements OnInit {
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')
-        this.router.navigateByUrl('/routines');
+        this.router.navigateByUrl('/exercices');
       }
     });
     this.exerciceBySearch = this.exerciceList;
@@ -71,14 +68,14 @@ export class ExerciceListComponent implements OnInit {
   }
 
   private subscribeToExercices() {
-    this.exerciceBySearch = this.filterTaches(this.exerciceList);
+    this.exerciceBySearch = this.filtrerExercices(this.exerciceList);
   }
 
   isTaskSelected(exerciceId: number): boolean {
     return this.selectedExercicesIds.includes(exerciceId);
   }
 
-  private filterTaches(exerciceList: Exercice[]): Exercice[] {
+  private filtrerExercices(exerciceList: Exercice[]): Exercice[] {
     return exerciceList.filter(exercice => this.isRechercheMatch(exercice));
   }
 
@@ -89,28 +86,6 @@ export class ExerciceListComponent implements OnInit {
     return (
       exerciceNomSansEspaces.includes(rechercheLower)
     );
-  }
-
-  // Nouvelle méthode pour la gestion des erreurs
-  handleError(error: any): void {
-    this.etatChargement = EtatChargement.ERREUR;
-    console.error('Erreur lors de la sauvegarde.', error);
-  }
-
-  updateRoutine(exercice: Exercice): Observable<Exercice> {
-    return this.exerciceService.updateExercice(exercice);
-  }
-
-  updateLoadingState(error: boolean): void {
-    this.etatChargement = error ? EtatChargement.ERREUR : EtatChargement.FAIT;
-  }
-
-  navigateToExercices(): void {
-    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
-  }
-
-  showNotification(error: boolean, errorCode?: any): void {
-    Swal.fire(error ? `Erreur lors de la sauvegarde.\nCode d'erreur : ${errorCode}` : 'Routines modifiées !');
   }
 
   toggleSelectAll() {
@@ -137,25 +112,37 @@ export class ExerciceListComponent implements OnInit {
 
   onSupprime(): void {
     Swal.fire({
-      title: 'Voulez-vous réellement supprimer ces tâches ?',
+      title: 'Voulez-vous réellement supprimer ces exercices ?',
       showDenyButton: true,
       confirmButtonText: 'Supprimer',
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        let observable = this.exerciceService.deleteMultipleExercices(this.selectedExercicesIds);
-        observable.subscribe({
-          next: () => {
-            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/taches'));
-            Swal.fire('Tâches supprimées !', '', 'success');
-          },
-          error: (err) => {
-            Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
-          }
-        });
+        this.deleteMultipleExercices();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
       }
+    });
+  }
+
+  private deleteMultipleExercices(): void {
+    let successfulDeletions = 0;
+    let totalDeletions = this.selectedExercicesIds.length;
+
+    this.selectedExercicesIds.forEach(id => {
+      let deleteObservable  = this.exerciceService.deleteExercice(id);
+      deleteObservable.subscribe({
+        next: () => {
+          successfulDeletions++;
+          if (successfulDeletions === totalDeletions) {
+            Swal.fire('Tous les exercices ont été supprimés avec succès !', '', 'success');
+            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'));
+          }
+        },
+        error: (err) => {
+          Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+        }
+      });
     });
   }
 }

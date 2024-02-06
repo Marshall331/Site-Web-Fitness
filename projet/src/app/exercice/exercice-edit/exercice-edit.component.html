@@ -1,1 +1,41 @@
-<p>exercice-edit works!</p>
+<div *ngIf="this.etatChargement == 'fait'">
+    <h2>Nouvel exercice</h2>
+  
+    <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
+      <div class="form-group">
+        <label for="nom">Nom</label>
+        <input [(ngModel)]="exercice.name" required ngModel minlength="3" maxlength="50" type="text" name="nom" id="nom"
+          class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="nom">Noms existants</label>
+        <select
+          [(ngModel)]="exercice.name"
+          ngModel
+          name="nom"
+          id="name"
+          class="form-control"
+        >
+          <option *ngFor="let exercices of exerciceList" [value]="exercices.name">
+            {{ exercices.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="rep">Répétitions</label>
+        <input [(ngModel)]="exercice.repetitions" required ngModel minlength="3" maxlength="50" type="number" name="rep" id="rep"
+          class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="weight">Répétitions</label>
+        <input [(ngModel)]="exercice.weight" required ngModel minlength="3" maxlength="50" type="number" name="weight" id="weight"
+          class="form-control" />
+      </div>
+      <div class="d-flex btn-group mt-2">
+        <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
+          {{ exercice.id === 0 ? "Créer cette exercice" : "Modifier cette exercice" }}
+        </button>
+        <a routerLink="/exercices" class="btn btn-outline-danger">Annuler</a>
+      </div>
+    </form>
+</div>

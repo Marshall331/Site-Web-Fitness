@@ -43,7 +43,7 @@ export class ExerciceItemComponent {
       denyButtonText: `Annuler`
     }).then((result) => {
       if (result.isConfirmed) {
-        let Observable = this.exerciceService.deleteExercice(this.exercice);
+        let Observable = this.exerciceService.deleteExercice(this.exercice.id);
         Observable.subscribe({
           next: routine => {
             Swal.fire("Routine supprimée !", "", "success");

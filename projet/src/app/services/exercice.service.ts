@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
-import { Observable, forkJoin, map } from 'rxjs';
+import { Observable, forkJoin, last, map } from 'rxjs';
 import { Exercice } from '../models/exercice';
 
 @Injectable({
@@ -23,6 +23,20 @@ export class ExerciceService {
     return this.http.get<Exercice>(this.ExerciceAPI + "/" + id);
   }
 
+  getLastId(): number {
+    let lastId = 0;
+    let ObservableAction;
+    ObservableAction = this.getExercices();
+    ObservableAction.subscribe({
+      next: (exerciceList: any) => {
+        lastId = exerciceList.lenght;
+      },
+      error: (err: string) => {
+      }
+    })
+    return lastId;
+  }
+
   addExercice(nouvelleExercice: Exercice): Observable<Exercice> {
     return this.http.post<Exercice>(this.ExerciceAPI, nouvelleExercice);
   }
@@ -31,18 +45,18 @@ export class ExerciceService {
     return this.http.put<Exercice>(this.ExerciceAPI + '/' + Exercice.id, Exercice)
   }
 
-  deleteExercice(Exercice: Exercice): Observable<Exercice> {
-    return this.http.delete<Exercice>(this.ExerciceAPI + '/' + Exercice.id)
+  deleteExercice(ExerciceId: number): Observable<Exercice> {
+    return this.http.delete<Exercice>(this.ExerciceAPI + '/' + ExerciceId)
   }
 
-  deleteMultipleExercices(ExercicesIds: number[]): Observable<void[]> {
-    const deleteRequests: Observable<void>[] = [];
+  // deleteMultipleExercices(ExercicesIds: number[]): Observable<Exercice[]> {
+  //   const deleteRequests: Observable<Exercice>[] = [];
 
-    ExercicesIds.forEach(ExercicesIds => {
-      const deleteRequest = this.http.delete<void>(`${this.ExerciceAPI}/${ExercicesIds}`);
-      deleteRequests.push(deleteRequest);
-    });
+  //   ExercicesIds.forEach(ExercicesIds => {
+  //     return this.deleteExercice(ExercicesIds);
+  //   });
 
-    return forkJoin(deleteRequests);
-  }
+  //   console.log(deleteRequests)
+  //   return forkJoin(deleteRequests);
+  // }
 }

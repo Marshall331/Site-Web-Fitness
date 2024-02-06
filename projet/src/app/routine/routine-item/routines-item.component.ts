@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Routine, EtatRoutine } from 'src/app/models/routine';
 import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-routines-item',
@@ -21,7 +20,7 @@ export class RoutineItemComponent {
   constructor(
     private routineService: RoutineService,
     private router: Router,
-  ) { }
+  ) {console.log(this.routine.name) }
 
   onCheckboxChange(event: any): void {
     this.checkboxChange.emit(event.target.checked);

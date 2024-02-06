@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EtatChargement } from 'src/app/models/chargement';
 import { EtatRoutine, Routine } from 'src/app/models/routine';
-import { EtatTache, Tache } from 'src/app/models/tache';
 import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
@@ -33,7 +32,7 @@ export class RoutineListComponent implements OnInit {
     private routineService: RoutineService,
     private router: Router,
   ) {
-    this.etatChoisi = sessionStorage['choixEtat'] as EtatTache || "tout";
+    this.etatChoisi = sessionStorage['choixEtat'] as EtatRoutine || "tout";
     this.recherche = sessionStorage['rechercheRoutine'] || "";
     this.etatChoisiSelection = "tout";
   }
@@ -45,7 +44,7 @@ export class RoutineListComponent implements OnInit {
       next: routine => {
         this.routinesList = routine;
         this.routinesBySearch = this.routinesList;
-        this.subscribeToTaches();
+        this.subscribeToRoutines();
         this.etatChargement = EtatChargement.FAIT;
       },
       error: err => {
@@ -56,26 +55,26 @@ export class RoutineListComponent implements OnInit {
   }
 
   updateEtat($event: Event) {
-    this.etatChoisi = $event as unknown as EtatTache;
+    this.etatChoisi = $event as unknown as EtatRoutine;
     sessionStorage['choixEtat'] = this.etatChoisi;
-    this.subscribeToTaches();
+    this.subscribeToRoutines();
   }
 
   updateRecherche($event: Event) {
     this.recherche = $event.toString();
     sessionStorage['rechercheRoutine'] = this.recherche;
-    this.subscribeToTaches();
+    this.subscribeToRoutines();
   }
 
-  private subscribeToTaches() {
-    this.routinesBySearch = this.filterTaches(this.routinesList);
+  private subscribeToRoutines() {
+    this.routinesBySearch = this.filtrerRoutines(this.routinesList);
   }
 
   isRoutinesSelected(RoutinesId: number): boolean {
     return this.selectedRoutinesIds.includes(RoutinesId);
   }
 
-  private filterTaches(routinesList: Routine[]): Routine[] {
+  private filtrerRoutines(routinesList: Routine[]): Routine[] {
     return this.etatChoisi === "tout"
       ? this.filterByRecherche(routinesList)
       : routinesList.filter(routine => routine.status === this.etatChoisi && this.isRechercheMatch(routine));
@@ -216,7 +215,7 @@ export class RoutineListComponent implements OnInit {
 
         observable.subscribe({
           next: () => {
-            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/taches'));
+            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
             Swal.fire('Tâches supprimées !', '', 'success');
           },
           error: (err) => {

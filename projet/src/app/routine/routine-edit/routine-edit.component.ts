@@ -53,7 +53,7 @@ export class RoutineEditComponent {
             this.routine = routine
             this.etatChargement = EtatChargement.FAIT
           },
-          error: (err: any) => this.router.navigateByUrl('/taches')
+          error: (err: any) => this.router.navigateByUrl('/routines')
         }
       )
     }
