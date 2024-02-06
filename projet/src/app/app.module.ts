@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { MenuComponent } from './menu/menu.component';
-import { TacheEditComponent } from './tache/tache-edit/tache-edit.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -16,6 +15,10 @@ import { ExerciceEditComponent } from './exercice/exercice-edit/exercice-edit.co
 import { ExerciceListComponent } from './exercice/exercice-list/exercice-list.component';
 import { ExerciceItemComponent } from './exercice/exercice-item/exercice-item.component';
 import { RoutineEditComponent } from './routine/routine-edit/routine-edit.component';
+import { ExerciceTypeListComponent } from './exerciceType/exercice-type-list/exercice-type-list.component';
+import { ExerciceTypeItemComponent } from './exerciceType/exercice-type-item/exercice-type-item.component';
+import { ExerciceTypeDetailComponent } from './exerciceType/exercice-type-detail/exercice-type-detail.component';
+import { ExerciceTypeEditComponent } from './exerciceType/exercice-type-edit/exercice-type-edit.component';
 
 @NgModule({
   declarations: [
@@ -28,9 +31,12 @@ import { RoutineEditComponent } from './routine/routine-edit/routine-edit.compon
     ExerciceItemComponent,
     ExerciceDetailComponent,
     ExerciceEditComponent,
+    ExerciceTypeListComponent,
+    ExerciceTypeItemComponent,
+    ExerciceTypeDetailComponent,
+    ExerciceTypeEditComponent,
     AccueilComponent,
     MenuComponent,
-    TacheEditComponent,
   ],
   imports: [
     BrowserModule,

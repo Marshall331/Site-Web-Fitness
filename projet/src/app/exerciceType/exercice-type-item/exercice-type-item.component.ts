@@ -1,29 +1,26 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { ExerciceTypes } from 'src/app/models/exercice-types';
+import { ExerciceTypesService } from 'src/app/services/exercice-types.service';
 import Swal from 'sweetalert2';
-import { Exercice } from 'src/app/models/exercice';
-import { ExerciceService } from 'src/app/services/exercice.service';
 
 @Component({
-  selector: 'app-exercice-item',
-  templateUrl: './exercice-item.component.html',
-  styleUrls: ['./exercice-item.component.css']
+  selector: 'app-exercice-type-item',
+  templateUrl: './exercice-type-item.component.html',
+  styleUrl: './exercice-type-item.component.css'
 })
-export class ExerciceItemComponent {
+export class ExerciceTypeItemComponent {
   @Input()
-  public exercice: Exercice = new Exercice();
-
+  public exerciceType: ExerciceTypes = new ExerciceTypes();
   @Input()
   isSelected: boolean = false;
-
   @Output()
   checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   @Input()
   public routineId: number | undefined;
 
   constructor(
-    private exerciceService: ExerciceService,
+    private exerciceTypeService: ExerciceTypesService,
     private router: Router,
   ) { }
 
@@ -32,7 +29,7 @@ export class ExerciceItemComponent {
   }
 
   updateStatus(event: any): void {
-    let Observable = this.exerciceService.updateExercice(this.exercice);
+    let Observable = this.exerciceTypeService.updateExerciceTypes(this.exerciceType);
     Observable.subscribe({
       error: err => {
         Swal.fire("Erreur lors de la sauvegarde.\nCode d'erreur : " + err, '', 'error')
@@ -49,14 +46,14 @@ export class ExerciceItemComponent {
       denyButtonText: `Annuler`
     }).then((result) => {
       if (result.isConfirmed) {
-        let Observable = this.exerciceService.deleteExercice(this.exercice.id);
+        let Observable = this.exerciceTypeService.deleteExerciceTypes(this.exerciceType.id);
         Observable.subscribe({
           next: routine => {
-            Swal.fire("Exercice supprimé !", "", "success");
+            Swal.fire("Type d'exercice supprimé !", "", "success");
             this.navigateBack();
           },
           error: err => {
-            window.alert("Erreur lors de la suppression de l'exercice.\nCode d'erreur : " + err)
+            window.alert("Erreur lors de la suppression du type d'exercice.\nCode d'erreur : " + err)
             this.navigateBack();
           }
         })
@@ -67,10 +64,6 @@ export class ExerciceItemComponent {
   }
 
   private navigateBack(): void {
-    if (this.routineId) {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
-    } else {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))
-    }
+      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercicestypes'))
   }
 }

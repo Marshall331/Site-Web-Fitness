@@ -2,13 +2,9 @@
     <div id="container" class="d-inline-flex">
         <div class="card bg-secondary mb-3" style="max-width: 20rem">
             <span class="badge bg-success" style="font-size: 20px" class="bg-info"></span>
-            <div class="card-header">#{{ exercice.id }} {{ exercice.name }}</div>
-            <p class="card-text" style="text-align: center">
-                Répétitions : {{ exercice.repetitions }} <br>
-                Poids : {{exercice.weight}}
-            </p>
+            <div class="card-header">#{{ exerciceType.id }} {{ exerciceType.name }}</div>
         </div>
-        <button id="edit-button" class="btn btn-outline-dark" routerLink="/exercice/edit/{{ exercice.id }}">
+        <button id="edit-button" class="btn btn-outline-dark" routerLink="/exercicetype/edit/{{ exerciceType.id }}">
             <i class="fa-solid fa-pen-to-square fa-lg"></i>
         </button>
     </div>

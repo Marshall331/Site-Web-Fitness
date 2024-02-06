@@ -13,19 +13,18 @@
 </div>
 
 <div *ngIf="etatChargement == 'fait'">
-    <div *ngIf="routineId == 0"><a style="font-size: 22px; border-radius: 5px;" routerLink="/exercice/new"
-        class="btn btn-outline-primary">
+    <a style="font-size: 22px; border-radius: 5px;" routerLink="/exercicetype/new" class="btn btn-outline-primary">
         <i class="fa-solid fa-plus"></i>
-        Nouvel exercice</a>
-</div><hr />
+        Nouveau type exercice</a>
+    <hr />
     <h2>
-        <b>{{ exerciceBySearch.length }}</b> exercices enregistrées
+        <b>{{ exerciceTypesBySearch.length }}</b> types exercices enregistrées
     </h2>
     <div class="largeur">
         <div id="container" class="d-inline-flex">
             <input [(ngModel)]="recherche" (ngModelChange)="updateRecherche($event)" id="search-bar"
                 class="form-control me-sm-2" type="search" placeholder="Rechercher un exercice" />
-            <div class="right-margin" *ngIf="this.selectedExercicesIds.length > 0">
+            <div class="right-margin" *ngIf="this.selectedExercicesTypesIds.length > 0">
                 <button class="btn btn-outline-dark" (click)="onSupprime()">
                     <i class="fa-solid fa-trash"></i>
                 </button>
@@ -36,11 +35,9 @@
             </div>
         </div>
         <ul class="list-group">
-            <br><app-exercice-item *ngFor="let exercice of exerciceBySearch || []" [exercice]="exercice"
-                [isSelected]="isTaskSelected(exercice.id)" (checkboxChange)="onTaskCheckboxChange($event, exercice.id)"
-                [routineId]="routineId">
-            </app-exercice-item>
-
+            <br><app-exercice-type-item *ngFor="let exercice of exerciceTypesBySearch || []" [exerciceType]="exercice"
+                [isSelected]="isTaskSelected(exercice.id)" (checkboxChange)="onTaskCheckboxChange($event, exercice.id)">
+            </app-exercice-type-item>
         </ul>
     </div>
 </div><br>

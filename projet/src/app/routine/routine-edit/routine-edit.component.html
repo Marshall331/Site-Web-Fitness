@@ -1,31 +1,49 @@
 <div *ngIf="this.etatChargement == 'fait'">
+  <ng-container *ngIf="routine.id === 0; else modifyRoutine">
     <h2>Nouvelle routine</h2>
-  
-    <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input [(ngModel)]="routine.name" required ngModel minlength="3" maxlength="50" type="text" name="nom" id="nom"
-          class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="etat">Etat</label>
-        <select [(ngModel)]="routine.status" ngModel required name="etat" id="etat" class="form-control">
-          <option *ngFor="let etat of etatRoutine | keyvalue" [value]="etat.value">
-            {{ etat.value }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="memo">Description</label>
-        <textarea [(ngModel)]="routine.description" required ngModel maxlength="256" name="memo" id="memo" cols="30" rows="3"
-          class="form-control"></textarea>
-      </div>
-      <div class="d-flex btn-group mt-2">
-        <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
-          {{ routine.id === 0 ? "Créer cette routine" : "Modifier cette routine" }}
-        </button>
-        <a routerLink="/routines" class="btn btn-outline-danger">Annuler</a>
-      </div>
-    </form>
+  </ng-container>
+  <ng-template #modifyRoutine>
+    <h2>Modifier la routine #{{routine.id}}</h2>
+  </ng-template>
+
+  <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
+    <div class="form-group">
+      <label for="nom">Nom</label>
+      <input [(ngModel)]="routine.name" required ngModel minlength="3" maxlength="50" type="text" name="nom" id="nom"
+        class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="etat">Etat</label>
+      <select [(ngModel)]="routine.status" ngModel required name="etat" id="etat" class="form-control">
+        <option *ngFor="let etat of etatRoutine | keyvalue" [value]="etat.value">
+          {{ etat.value }}
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="memo">Description</label>
+      <textarea [(ngModel)]="routine.description" required ngModel maxlength="256" name="memo" id="memo" cols="30"
+        rows="3" class="form-control"></textarea>
+    </div>
+    <div class="d-flex btn-group mt-2">
+      <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
+        {{ routine.id === 0 ? "Créer" : "Modifier" }}
+      </button>
+      <a routerLink="/routines" class="btn btn-outline-danger">Annuler</a>
+    </div>
+  </form><br>
+
+  <ng-container *ngIf="routine.id!=0">
+  <a style="font-size: 18px; border-radius: 5px;" (click)="showExerciceAddForm()" class="btn btn-outline-primary">
+    <i class="fa-solid fa-plus"></i>
+    Ajouter un exercice</a>
+    <div>
+      <ng-container *ngIf="showExerciceEdit">
+        <br><app-exercice-edit [routineId]="routine.id" [ajoutDansRoutine]="true" ></app-exercice-edit>
+      </ng-container>
+    </div>
+     
     <app-exercice-list [routineId]="routine.id"></app-exercice-list>
-</div>
+  <hr /></ng-container>
+  <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des routines</a>
+</div><br><br>

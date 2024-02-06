@@ -37,6 +37,11 @@ export class ExerciceService {
     return lastId;
   }
 
+  getExercicesByRoutineId(routineId: number): Observable<Exercice[]> {
+    const url = `${this.ExerciceAPI}?routineId=${routineId}`;
+    return this.http.get<Exercice[]>(url);
+  }
+
   addExercice(nouvelleExercice: Exercice): Observable<Exercice> {
     return this.http.post<Exercice>(this.ExerciceAPI, nouvelleExercice);
   }

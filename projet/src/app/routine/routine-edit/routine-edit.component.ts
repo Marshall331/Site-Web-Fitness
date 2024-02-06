@@ -16,6 +16,7 @@ export class RoutineEditComponent {
   public routine: Routine = new Routine();
   readonly etatRoutine = EtatRoutine;
   public etatChargement = EtatChargement.ENCOURS;
+  public showExerciceEdit: boolean = false;
 
   constructor(
     private routineService: RoutineService,
@@ -33,11 +34,12 @@ export class RoutineEditComponent {
       }
       ObservableAction.subscribe({
         next: (routine: any) => {
-          Swal.fire(this.routine.id ? "Routine modifiée !" : "Routine ajoutée !", '', 'success');
-          this.router.navigateByUrl("/routines")
+          Swal.fire(this.routine.id != 0 ? "Routine modifiée !" : "Routine ajoutée !", '', 'success');
+          this.router.navigateByUrl('/').then(() => this.router.navigateByUrl("/routine/edit/" + this.routine.id));
         },
         error: (err: string) => {
           Swal.fire("Erreur lors de la sauvegarde.\nCode d'erreur : " + err)
+          this.router.navigateByUrl('/').then(() => this.router.navigateByUrl("/routines"));
         }
       })
     }
@@ -58,5 +60,9 @@ export class RoutineEditComponent {
       )
     }
     else { this.etatChargement = EtatChargement.FAIT }
+  }
+
+  showExerciceAddForm() {
+    this.showExerciceEdit = !this.showExerciceEdit;
   }
 }

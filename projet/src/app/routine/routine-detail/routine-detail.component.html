@@ -16,8 +16,18 @@
     <button id="edit-button" class="btn btn-outline-dark" routerLink="/routine/edit/{{ routine.id }}">
       <i class="fa-solid fa-pen-to-square fa-lg"></i>&nbsp;Modifier
     </button>
-  </div><hr>
+  </div>
+  <hr>
+  <a style="font-size: 18px; border-radius: 5px;" (click)="showExerciceAddForm()" class="btn btn-outline-primary">
+    <i class="fa-solid fa-plus"></i>
+    Ajouter un exercice</a>
+    <div>
+      <ng-container *ngIf="showExerciceEdit">
+        <br><app-exercice-edit [routineId]="routine.id" [ajoutDansRoutine]="true" ></app-exercice-edit>
+      </ng-container>
+    </div>
+     
   <app-exercice-list [routineId]="routine.id"></app-exercice-list>
-  <hr />
-  <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des tâches</a>
-</div>
+  <hr>
+  <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des routines</a>
+</div><br><br>

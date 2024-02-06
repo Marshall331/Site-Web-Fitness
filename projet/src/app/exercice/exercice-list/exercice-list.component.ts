@@ -39,23 +39,21 @@ export class ExerciceListComponent implements OnInit {
   }
 
   getExercicesById(id: number): void {
-    this.exerciceService.getExercices().subscribe({
+    let observable;
+    if (this.routineId == 0) {
+      observable = this.exerciceService.getExercices();
+    } else {
+      observable = this.exerciceService.getExercicesByRoutineId(this.routineId);
+    }
+    observable.subscribe({
       next: exercices => {
-        if (this.routineId == 0) {
-          this.exerciceList = exercices;
-        } else {
-          for (const exo of exercices) {
-            if (exo.routineId == id) {
-              this.exerciceList.push(exo);
-            }
-          }
-        }
+        this.exerciceList = exercices;
         this.subscribeToExercices();
         this.etatChargement = EtatChargement.FAIT;
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')
-        this.router.navigateByUrl('/exercices');
+        this.navigateBack();
       }
     });
     this.exerciceBySearch = this.exerciceList;
@@ -65,6 +63,8 @@ export class ExerciceListComponent implements OnInit {
     this.recherche = $event.toString();
     sessionStorage['rechercheExercice'] = this.recherche;
     this.subscribeToExercices();
+    console.log(this.selectedExercicesIds)
+
   }
 
   private subscribeToExercices() {
@@ -118,31 +118,42 @@ export class ExerciceListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteMultipleExercices();
+        this.etatChargement = EtatChargement.ENCOURS;
+        this.deleteExerciceRecursively();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
       }
     });
   }
 
-  private deleteMultipleExercices(): void {
-    let successfulDeletions = 0;
-    let totalDeletions = this.selectedExercicesIds.length;
+  private deleteExerciceRecursively(): void {
 
-    this.selectedExercicesIds.forEach(id => {
-      let deleteObservable  = this.exerciceService.deleteExercice(id);
+    const id = this.selectedExercicesIds[0];
+    this.selectedExercicesIds.splice(0, 1);
+
+    if (id) {
+      const deleteObservable = this.exerciceService.deleteExercice(id);
       deleteObservable.subscribe({
-        next: () => {
-          successfulDeletions++;
-          if (successfulDeletions === totalDeletions) {
-            Swal.fire('Tous les exercices ont été supprimés avec succès !', '', 'success');
-            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'));
-          }
-        },
         error: (err) => {
           Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+        },
+        complete: () => {
+          if (this.selectedExercicesIds.length == 0) {
+            this.etatChargement = EtatChargement.FAIT;
+            Swal.fire('Tous les exercices ont été supprimés avec succès !', '', 'success');
+            this.navigateBack();
+          } else {
+            this.deleteExerciceRecursively();
+          }
         }
-      });
-    });
+      })
+    };
+  }
+  private navigateBack(): void {
+    if (this.routineId) {
+      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
+    } else {
+      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))
+    }
   }
 }

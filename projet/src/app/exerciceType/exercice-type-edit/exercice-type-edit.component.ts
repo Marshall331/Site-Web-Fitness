@@ -9,24 +9,21 @@ import { ExerciceService } from 'src/app/services/exercice.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-exercice-edit',
-  templateUrl: './exercice-edit.component.html',
-  styleUrls: ['./exercice-edit.component.css']
+  selector: 'app-exercice-type-edit',
+  templateUrl: './exercice-type-edit.component.html',
+  styleUrls: ['./exercice-type-edit.component.css']
 })
-export class ExerciceEditComponent {
+export class ExerciceTypeEditComponent {
 
   @Input()
   public routineId: number = 0;
   @Input()
   public ajoutDansRoutine: boolean = false;
-  public exercice: Exercice = new Exercice();
+  public exerciceType: ExerciceTypes = new ExerciceTypes();
   public etatChargement = EtatChargement.ENCOURS;
-  public exerciceList!: Exercice[];
-  public exerciceTypesList!: ExerciceTypes[];
 
   constructor(
-    private exerciceService: ExerciceService,
-    private exerciceTypesService: ExerciceTypesService,
+    private exerciceTypeService: ExerciceTypesService,
     private router: Router,
     private route: ActivatedRoute,
   ) {
@@ -35,15 +32,14 @@ export class ExerciceEditComponent {
   public onSubmit(leFormulaire: NgForm): void {
     if (leFormulaire.valid) {
       let ObservableAction;
-      this.exercice.routineId = this.routineId;
-      if (this.exercice.id) {
-        ObservableAction = this.exerciceService.updateExercice(this.exercice);
+      if (this.exerciceType.id) {
+        ObservableAction = this.exerciceTypeService.updateExerciceTypes(this.exerciceType);
       } else {
-        ObservableAction = this.exerciceService.addExercice(this.exercice);
+        ObservableAction = this.exerciceTypeService.addExerciceTypes(this.exerciceType);
       }
       ObservableAction.subscribe({
         next: (exercice: any) => {
-          Swal.fire(this.exercice.id ? "Exercice modifié !" : "Exercice ajouté !", '', 'success');
+          Swal.fire(this.exerciceType.id ? "Type d'exercice modifié !" : "Type d'exercice ajouté !", '', 'success');
           this.navigateBack();
         },
         error: (err: string) => {
@@ -54,23 +50,13 @@ export class ExerciceEditComponent {
   }
 
   ngOnInit(): void {
-    let observableAction = this.exerciceTypesService.getExercicesTypes();
-    observableAction.subscribe({
-      next: exercicesTypes => {
-        this.exerciceTypesList = exercicesTypes;
-      },
-      error: err => {
-        Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des types d\'exercices.', 'error')
-        this.navigateBack();
-      }
-    });
     const id = this.route.snapshot.params['id'];
-    this.exercice = new Exercice()
-    if (id && !this.ajoutDansRoutine) {
-      this.exerciceService.getExercice(id).subscribe(
+    this.exerciceType = new ExerciceTypes()
+    if (id) {
+      this.exerciceTypeService.getExerciceType(id).subscribe(
         {
-          next: (exo: Exercice) => {
-            this.exercice = exo
+          next: (exo: ExerciceTypes) => {
+            this.exerciceType = exo
             this.etatChargement = EtatChargement.FAIT
           },
           error: (err: any) => {
@@ -84,9 +70,9 @@ export class ExerciceEditComponent {
 
   private navigateBack(): void {
     if (this.ajoutDansRoutine) {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
+      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercicetypes/' + this.routineId));
     } else {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))
+      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercicestypes'))
     }
   }
 }

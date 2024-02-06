@@ -87,10 +87,10 @@ export class RoutineListComponent implements OnInit {
   private isRechercheMatch(routine: Routine): boolean {
     const rechercheLower = this.recherche.toLowerCase().replace(/\s/g, '');
     const routineNomSansEspaces = routine.description.toLowerCase().replace(/\s/g, '');
-  
+
     return routineNomSansEspaces.includes(rechercheLower);
   }
-  
+
 
   // Nouvelle méthode pour la gestion de la confirmation
   async confirmUpdate(etatChoisi: EtatRoutine): Promise<boolean> {
@@ -211,14 +211,16 @@ export class RoutineListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.etatChargement = EtatChargement.ENCOURS;
         let observable = this.routineService.deleteMultipleRoutines(this.selectedRoutinesIds);
-
         observable.subscribe({
           next: () => {
             this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
-            Swal.fire('Tâches supprimées !', '', 'success');
+            this.etatChargement = EtatChargement.FAIT;
+            Swal.fire('Routines supprimées !', '', 'success');
           },
           error: (err) => {
+            this.etatChargement = EtatChargement.FAIT;
             Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
           }
         });

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Tache } from '../models/tache';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, forkJoin } from 'rxjs';

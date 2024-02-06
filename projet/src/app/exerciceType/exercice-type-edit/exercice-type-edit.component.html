@@ -1,0 +1,24 @@
+<div *ngIf="this.etatChargement == 'fait'">
+    <ng-container *ngIf="exerciceType.id === 0; else modifierTypeExo">
+        <h2>Nouveau type d'exercice</h2>
+    </ng-container>
+    <ng-template #modifierTypeExo>
+        <h2>Modifier le type d'exercice #{{exerciceType.id}}</h2>
+    </ng-template>
+
+    <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
+        <div class="form-group">
+            <label for="Nom">Nom</label>
+            <input [(ngModel)]="exerciceType.name" required ngModel minlength="3" maxlength="50" type="text"
+                name="Nom" id="weight" class="form-control" />
+        </div>
+        <div class="d-flex btn-group mt-2">
+            <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
+                {{ exerciceType.id === 0 ? "Créer" : "Modifier" }}
+            </button>
+            <ng-container *ngIf="!ajoutDansRoutine">
+                <a routerLink="/exercicestypes" class="btn btn-outline-danger">Annuler</a>
+            </ng-container>
+        </div>
+    </form>
+</div>
