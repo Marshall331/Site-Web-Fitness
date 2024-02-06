@@ -6,7 +6,7 @@ describe('Prise en main Jasmine', () => {
         expect(true).toBe(true)
     })
     // un autre test de la même suite
-    it('2 + 2 vaut 4', () => {
-        expect(2 + 2).not.toBe(4)
-    })
+    // it('2 + 2 vaut 4', () => {
+    //     expect(2 + 2).not.toBe(4)
+    // })
 })

@@ -15,5 +15,6 @@ export class AppComponent {
     new Personne('Jean-Pierre', 31, "jp-31@mail.fr"),
     new Personne('Lou', 10, "lou@mail.fr")
   ]
+  static personne: any;
 }
 
