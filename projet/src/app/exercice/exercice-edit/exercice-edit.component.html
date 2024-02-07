@@ -9,11 +9,19 @@
   <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
     <div class="form-group">
       <label for="typesExo">Types d'exercices</label>
-      <select [(ngModel)]="exercice.name" ngModel required name="typesExo" id="name" class="form-control">
+      <!-- <input type="text" name="typesExo" list="listeTypes"> -->
+      <input [(ngModel)]="exercice.name" required ngModel minlength="2" maxlength="80" type="text" name="typesExo"
+        id="typesExo" class="form-control" list="listeTypes" />
+      <!-- <select [(ngModel)]="exercice.name" ngModel required name="typesExo" id="name" class="form-control">
         <option *ngFor="let exerciceType of exerciceTypesList" [value]="exerciceType.name">
           {{ exerciceType.name }}
         </option>
-      </select>
+      </select> -->
+      <datalist id="listeTypes">
+        <option *ngFor="let exerciceType of exerciceTypesList" [value]="exerciceType.name">
+          {{ exerciceType.name }}
+        </option>
+      </datalist>
     </div>
     <div class="form-group">
       <label for="rep">Répétitions</label>

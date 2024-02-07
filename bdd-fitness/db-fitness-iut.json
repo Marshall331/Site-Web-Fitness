@@ -5,7 +5,7 @@
       "name": "Routine de Flexibilité",
       "description": "Augmente la flexibilité et réduit le stress.",
       "creationDate": "2024-02-04",
-      "status": "inactive"
+      "status": "active"
     },
     {
       "id": 4,
@@ -19,6 +19,13 @@
       "name": "Puissance et Agilité",
       "description": "Augmente la puissance musculaire et l'agilité.",
       "creationDate": "2024-02-20",
+      "status": "active"
+    },
+    {
+      "id": 6,
+      "name": "zzzzzzzz",
+      "description": "saas",
+      "creationDate": "2024-02-07T07:25:19.014Z",
       "status": "active"
     }
   ],
@@ -35,20 +42,6 @@
       "routineId": 3,
       "name": "Étirements des bras",
       "repetitions": 1,
-      "weight": 0
-    },
-    {
-      "id": 7,
-      "routineId": 3,
-      "name": "Yoga",
-      "repetitions": 1,
-      "weight": 0
-    },
-    {
-      "id": 10,
-      "routineId": 5,
-      "name": "Sprints",
-      "repetitions": 10,
       "weight": 0
     }
   ],
@@ -187,11 +180,7 @@
     },
     {
       "id": 71,
-      "name": "dazdza"
-    },
-    {
-      "id": 72,
-      "name": "dazdza"
+      "name": "KHALIL"
     }
   ]
 }

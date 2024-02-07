@@ -140,7 +140,7 @@ export class RoutineListComponent implements OnInit {
       try {
         const routine = await this.routineService.getRoutine(id).toPromise();
 
-        if (routine) {
+        if (routine && routine.status != etatChoisi) {
           const observable = this.updateRoutine(routine, etatChoisi);
 
           try {
