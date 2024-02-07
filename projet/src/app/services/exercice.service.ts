@@ -38,8 +38,7 @@ export class ExerciceService {
   }
 
   getExercicesByRoutineId(routineId: number): Observable<Exercice[]> {
-    const url = `${this.ExerciceAPI}?routineId=${routineId}`;
-    return this.http.get<Exercice[]>(url);
+    return this.http.get<Exercice[]>(this.ExerciceAPI + '?routineId=' + routineId);
   }
 
   addExercice(nouvelleExercice: Exercice): Observable<Exercice> {
@@ -52,6 +51,10 @@ export class ExerciceService {
 
   deleteExercice(ExerciceId: number): Observable<Exercice> {
     return this.http.delete<Exercice>(this.ExerciceAPI + '/' + ExerciceId)
+  }
+
+  deleteExercicesByRoutine(routineId: number): Observable<Exercice[]> {
+    return this.http.delete<Exercice[]>(this.ExerciceAPI + '?routineId=' + routineId);
   }
 
   // deleteMultipleExercices(ExercicesIds: number[]): Observable<Exercice[]> {

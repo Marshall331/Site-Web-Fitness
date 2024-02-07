@@ -22,6 +22,7 @@ export class ExerciceTypeListComponent implements OnInit {
   public exerciceTypesList: ExerciceTypes[] = [];
   public exerciceTypesBySearch: ExerciceTypes[] = [];
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
+  public valBarreChargement: number = Math.random() * 100;
 
   constructor(
     private exerciceTypeService: ExerciceTypesService,
@@ -37,7 +38,7 @@ export class ExerciceTypeListComponent implements OnInit {
       next: exercicesType => {
         this.exerciceTypesList = exercicesType;
         this.subscribeToExercicesTypes();
-        this.etatChargement = EtatChargement.FAIT;
+        this.playLoadingAnimation();
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des types d\'exercices.', 'error')
@@ -107,15 +108,16 @@ export class ExerciceTypeListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.valBarreChargement = Math.random() * 100;
         this.etatChargement = EtatChargement.ENCOURS;
-        this.deleteExerciceTypeRecursively();
+        this.deletePlusieursExerciceType();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
       }
     });
   }
 
-  private deleteExerciceTypeRecursively(): void {
+  private deletePlusieursExerciceType(): void {
 
     const id = this.selectedExercicesTypesIds[0];
     this.selectedExercicesTypesIds.splice(0, 1);
@@ -128,11 +130,11 @@ export class ExerciceTypeListComponent implements OnInit {
         },
         complete: () => {
           if (this.selectedExercicesTypesIds.length == 0) {
-            this.etatChargement = EtatChargement.FAIT;
-            Swal.fire('Tous les types d\'exercices ont été supprimés avec succès !', '', 'success');
+            this.playLoadingAnimation();
+            Swal.fire('Types d\'exercices supprimés !', '', 'success');
             this.navigateBack();
           } else {
-            this.deleteExerciceTypeRecursively();
+            this.deletePlusieursExerciceType();
           }
         }
       })
@@ -141,4 +143,12 @@ export class ExerciceTypeListComponent implements OnInit {
   private navigateBack(): void {
     this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('exercicestypes'));
   }
+
+  private playLoadingAnimation() {
+    this.valBarreChargement = 100;
+    setTimeout(() => {
+      this.etatChargement = EtatChargement.FAIT;
+    }, 50);
+  }
+
 }

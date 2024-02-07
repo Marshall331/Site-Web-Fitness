@@ -1,8 +1,9 @@
 <div *ngIf="etatChargement === 'en cours'" class="d-flex justify-content-center align-items-center vh-100">
     <h3 id="txt-loading">Chargement . . .</h3>
     <div class="progress w-50 custom-height">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75"
-            aria-valuemin="0" aria-valuemax="100" style="width: 75%; transition: width 0.1s linear"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0"
+            aria-valuemax="100" [style.width.%]="valBarreChargement" [style.transition]="'width 0.05s linear'">
+        </div>
     </div>
 </div>
 
@@ -18,7 +19,7 @@
         Nouveau type exercice</a>
     <hr />
     <h2>
-        <b>{{ exerciceTypesBySearch.length }}</b> types exercices enregistrées
+        <b>{{ exerciceTypesBySearch.length }}</b> types exercices enregistrés
     </h2>
     <div class="largeur">
         <div id="container" class="d-inline-flex">
@@ -36,7 +37,7 @@
         </div>
         <ul class="list-group">
             <br><app-exercice-type-item *ngFor="let exercice of exerciceTypesBySearch || []" [exerciceType]="exercice"
-                [isSelected]="isTaskSelected(exercice.id)" (checkboxChange)="onTaskCheckboxChange($event, exercice.id)">
+                [isSelected]="isTaskSelected(exercice.id)" (checkboxChange)="onTaskCheckboxChange($event, exercice.id)" >
             </app-exercice-type-item>
         </ul>
     </div>

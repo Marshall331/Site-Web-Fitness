@@ -9,37 +9,46 @@
   <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
     <div class="form-group">
       <label for="typesExo">Types d'exercices</label>
-      <!-- <input type="text" name="typesExo" list="listeTypes"> -->
-      <input [(ngModel)]="exercice.name" required ngModel minlength="2" maxlength="80" type="text" name="typesExo"
+      <input [(ngModel)]="exercice.name" required ngModel minlength="1" maxlength="100" type="text" name="typesExo"
         id="typesExo" class="form-control" list="listeTypes" />
-      <!-- <select [(ngModel)]="exercice.name" ngModel required name="typesExo" id="name" class="form-control">
-        <option *ngFor="let exerciceType of exerciceTypesList" [value]="exerciceType.name">
-          {{ exerciceType.name }}
-        </option>
-      </select> -->
       <datalist id="listeTypes">
         <option *ngFor="let exerciceType of exerciceTypesList" [value]="exerciceType.name">
           {{ exerciceType.name }}
         </option>
       </datalist>
     </div>
+    <ng-container *ngIf="routineId == -1">
+      <div class="form-group">
+        <label for="routine">Ajouter à la routine</label>
+        <select [(ngModel)]="exercice.routineId" ngModel required name="routine" id="etat" class="form-control">
+          <option *ngFor="let routine of routinesList" [value]="routine.id">
+            #{{routine.id}} {{ routine.name }}
+          </option>
+        </select>
+      </div>
+    </ng-container>
     <div class="form-group">
       <label for="rep">Répétitions</label>
-      <input [(ngModel)]="exercice.repetitions" required ngModel minlength="3" maxlength="50" type="number" name="rep"
+      <input [(ngModel)]="exercice.repetitions" required ngModel type="number" name="rep"
         id="rep" class="form-control" />
     </div>
     <div class="form-group">
       <label for="weight">Poids</label>
-      <input [(ngModel)]="exercice.weight" required ngModel minlength="3" maxlength="50" type="number" name="weight"
+      <input [(ngModel)]="exercice.weight" required ngModel type="number" name="weight"
         id="weight" class="form-control" />
     </div>
     <div class="d-flex btn-group mt-2">
       <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
         {{ exercice.id === 0 ? "Créer" : "Modifier" }}
       </button>
-      <ng-container *ngIf="!ajoutDansRoutine">
+      <ng-container *ngIf="routineId == -1; else retournerVersRoutine">
         <a routerLink="/exercices" class="btn btn-outline-danger">Annuler</a>
       </ng-container>
+
+      <ng-template #retournerVersRoutine>
+        <a [routerLink]="'/routine/' + routineId" class="btn btn-outline-danger">Annuler</a>
+      </ng-template>
+      
     </div>
   </form>
 </div>

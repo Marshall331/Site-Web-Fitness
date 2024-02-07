@@ -5,13 +5,30 @@
             <div class="card-header">#{{ exercice.id }} {{ exercice.name }}</div>
             <p class="card-text" style="text-align: center">
                 Répétitions : {{ exercice.repetitions }} <br>
-                Poids : {{exercice.weight}}
+                Poids : {{exercice.weight}} kg <br>
+                &nbsp;&nbsp;Utilisé dans la routine <a href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a>&nbsp;&nbsp;<br>
             </p>
         </div>
-        <button id="edit-button" class="btn btn-outline-dark" routerLink="/exercice/edit/{{ exercice.id }}">
+        <!-- <button class="btn btn-outline-dark button" routerLink="/exercice/edit/{{ exercice.id }}">
             <i class="fa-solid fa-pen-to-square fa-lg"></i>
-        </button>
+        </button> -->
+        <ng-container *ngIf="routineId == 0; else routineExoEditLien">
+            <button class="btn btn-outline-dark button" [routerLink]="'/exercice/edit/' + exercice.id">
+                <i class="fa-solid fa-pen-to-square fa-lg"></i>
+            </button>&nbsp;
+        </ng-container>
+        <ng-template #routineExoEditLien>
+            <button class="btn btn-outline-dark button"
+                [routerLink]="'/routine/' + routineId + '/exercice/edit/' + exercice.id">
+                <i class="fa-solid fa-pen-to-square fa-lg"></i>
+            </button>&nbsp;
+        </ng-template>
     </div>
     <hr />
-    <a routerLink="/exercices" class="btn btn-outline-primary">Retour à la liste des exercices</a>
+    <ng-container *ngIf="routineId == 0; else routineDetailLien">
+        <a routerLink="/exercices" class="btn btn-outline-primary">Retour à la liste des exercices</a>
+    </ng-container>
+    <ng-template #routineDetailLien>
+        <a [routerLink]="'/routine/' + routineId" class="btn btn-outline-primary">Retour</a>
+    </ng-template>
 </div>

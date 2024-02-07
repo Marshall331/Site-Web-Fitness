@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EtatChargement } from 'src/app/models/chargement';
+import { Exercice } from 'src/app/models/exercice';
 import { EtatRoutine, Routine } from 'src/app/models/routine';
 import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
@@ -16,6 +17,7 @@ export class RoutineDetailComponent {
   public etatRoutine: EtatRoutine = EtatRoutine.ACTIVE;
   public etatChargement = EtatChargement.ENCOURS;
   public showExerciceEdit: boolean = false;
+  
   constructor(
     private routineService: RoutineService,
     private router: Router,

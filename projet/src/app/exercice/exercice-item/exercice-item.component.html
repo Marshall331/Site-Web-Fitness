@@ -1,13 +1,30 @@
-<li class="list-group-item bg-" >
+<li class="list-group-item bg-">
     <div class="d-flex justify-content-between">
-        <p>#{{exercice.id}} {{ exercice.name }} | Répétitions : {{exercice.repetitions}} | Poids : {{exercice.weight}} kg</p>
+        <p>#{{exercice.id}} {{ exercice.name }} | Répétitions : {{exercice.repetitions}} | Poids : {{exercice.weight}}
+            kg | Routine <a href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></p>
         <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-dark" routerLink="/exercice/{{ exercice.id }}">
-                <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-            </button>&nbsp;
-            <button class="btn btn-outline-dark" routerLink="/exercice/edit/{{ exercice.id }}">
-                <i class="fa-solid fa-pen-to-square fa-lg"></i>
-            </button>&nbsp;
+            <ng-container *ngIf="routineId == 0; else routineExoDetailLien">
+                <button class="btn btn-outline-dark" [routerLink]="'/exercice/' + exercice.id">
+                    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                </button>&nbsp;
+            </ng-container>
+            <ng-template #routineExoDetailLien>
+                <button class="btn btn-outline-dark"
+                    [routerLink]="'/routine/' + routineId + '/exercice/' + exercice.id">
+                    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                </button>&nbsp;
+            </ng-template>
+            <ng-container *ngIf="routineId == 0; else routineExoEditLien">
+                <button class="btn btn-outline-dark" [routerLink]="'/exercice/edit/' + exercice.id">
+                    <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                </button>&nbsp;
+            </ng-container>
+            <ng-template #routineExoEditLien>
+                <button class="btn btn-outline-dark"
+                    [routerLink]="'/routine/' + routineId + '/exercice/edit/' + exercice.id">
+                    <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                </button>&nbsp;
+            </ng-template>
             <button class="btn btn-outline-dark" (click)="onSupprime()">
                 <i class="fa-solid fa-trash"></i>
             </button>

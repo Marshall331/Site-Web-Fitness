@@ -9,7 +9,7 @@
   <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
     <div class="form-group">
       <label for="nom">Nom</label>
-      <input [(ngModel)]="routine.name" required ngModel minlength="3" maxlength="50" type="text" name="nom" id="nom"
+      <input [(ngModel)]="routine.name" required ngModel minlength="1" maxlength="50" type="text" name="nom" id="nom"
         class="form-control" />
     </div>
     <div class="form-group">
@@ -39,7 +39,7 @@
     Ajouter un exercice</a>
     <div>
       <ng-container *ngIf="showExerciceEdit">
-        <br><app-exercice-edit [routineId]="routine.id" [ajoutDansRoutine]="true" ></app-exercice-edit>
+        <br><app-exercice-edit [routineId]="routine.id" ></app-exercice-edit>
       </ng-container>
     </div>
      

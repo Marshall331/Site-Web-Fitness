@@ -8,13 +8,6 @@
       "status": "active"
     },
     {
-      "id": 4,
-      "name": "Cardio Intensif",
-      "description": "Séance de cardio pour améliorer l'endurance et brûler des calories.",
-      "creationDate": "2024-02-10",
-      "status": "active"
-    },
-    {
       "id": 5,
       "name": "Puissance et Agilité",
       "description": "Augmente la puissance musculaire et l'agilité.",
@@ -23,36 +16,198 @@
     },
     {
       "id": 6,
-      "name": "zzzzzzzz",
-      "description": "saas",
-      "creationDate": "2024-02-07T07:25:19.014Z",
+      "name": "Mobilité et Équilibre",
+      "description": "Exercices pour améliorer la mobilité et l'équilibre.",
+      "creationDate": "2024-03-01",
       "status": "active"
     }
   ],
   "exercises": [
     {
-      "id": 5,
-      "routineId": 3,
-      "name": "Sprint de Compilation",
-      "repetitions": 1,
+      "id": 10,
+      "routineId": 5,
+      "name": "Sprints",
+      "repetitions": 10,
       "weight": 0
     },
     {
-      "id": 6,
-      "routineId": 3,
-      "name": "Étirements des bras",
-      "repetitions": 1,
+      "id": 13,
+      "routineId": 6,
+      "name": "Pilates - Roll Up",
+      "repetitions": 10,
       "weight": 0
     },
     {
-      "id": 7,
+      "id": 21,
       "routineId": 3,
-      "name": "dzaaz",
+      "name": "Bicycle Crunches",
+      "repetitions": 0,
+      "weight": 0
+    },
+    {
+      "id": 28,
+      "routineId": "5",
+      "name": "Bird Dog",
+      "repetitions": 0,
+      "weight": 0
+    },
+    {
+      "id": 29,
+      "routineId": "6",
+      "name": "Bear Crawls",
       "repetitions": 0,
       "weight": 0
     }
   ],
   "exerciseTypes": [
+    {
+      "id": 1,
+      "name": "Arm Circles"
+    },
+    {
+      "id": 2,
+      "name": "Bear Crawls"
+    },
+    {
+      "id": 3,
+      "name": "Bench Press"
+    },
+    {
+      "id": 4,
+      "name": "Bicep Curls"
+    },
+    {
+      "id": 5,
+      "name": "Bicycle Crunches"
+    },
+    {
+      "id": 6,
+      "name": "Bird Dog"
+    },
+    {
+      "id": 7,
+      "name": "Box Jumps"
+    },
+    {
+      "id": 8,
+      "name": "Burpees"
+    },
+    {
+      "id": 9,
+      "name": "Calf Raises"
+    },
+    {
+      "id": 10,
+      "name": "Chest Fly"
+    },
+    {
+      "id": 11,
+      "name": "Clavier Flex"
+    },
+    {
+      "id": 12,
+      "name": "Cônes d'agilité"
+    },
+    {
+      "id": 13,
+      "name": "Course sur place"
+    },
+    {
+      "id": 14,
+      "name": "Crunches"
+    },
+    {
+      "id": 15,
+      "name": "Cyclisme"
+    },
+    {
+      "id": 16,
+      "name": "Deadlifts"
+    },
+    {
+      "id": 17,
+      "name": "Donkey Kicks"
+    },
+    {
+      "id": 18,
+      "name": "Dumbbell Rows"
+    },
+    {
+      "id": 19,
+      "name": "Étirements des bras"
+    },
+    {
+      "id": 20,
+      "name": "Étirements des jambes"
+    },
+    {
+      "id": 21,
+      "name": "Étirements doux"
+    },
+    {
+      "id": 22,
+      "name": "Fencing"
+    },
+    {
+      "id": 23,
+      "name": "Flutter Kicks"
+    },
+    {
+      "id": 24,
+      "name": "Gladiateur du Clavier"
+    },
+    {
+      "id": 25,
+      "name": "Glute Bridge"
+    },
+    {
+      "id": 26,
+      "name": "Guerrier Pixel"
+    },
+    {
+      "id": 27,
+      "name": "Hackathon Stretch"
+    },
+    {
+      "id": 28,
+      "name": "High Knees"
+    },
+    {
+      "id": 29,
+      "name": "Jumping Jacks"
+    },
+    {
+      "id": 30,
+      "name": "Kettlebell Swings"
+    },
+    {
+      "id": 31,
+      "name": "Lat Pulldowns"
+    },
+    {
+      "id": 32,
+      "name": "Leg Raises"
+    },
+    {
+      "id": 33,
+      "name": "Lunges"
+    },
+    {
+      "id": 34,
+      "name": "Marche du Codeur"
+    },
+    {
+      "id": 35,
+      "name": "Méditation"
+    },
+    {
+      "id": 36,
+      "name": "Mountain Climbers"
+    },
+    {
+      "id": 37,
+      "name": "Overhead Press"
+    },
     {
       "id": 38,
       "name": "Pilates - Roll Up"
@@ -184,10 +339,6 @@
     {
       "id": 70,
       "name": "Yoga - Pose du guerrier"
-    },
-    {
-      "id": 71,
-      "name": "KHALIL"
     }
   ]
 }

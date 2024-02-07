@@ -9,7 +9,7 @@
     <form #formulaire="ngForm" (ngSubmit)="onSubmit(formulaire)">
         <div class="form-group">
             <label for="Nom">Nom</label>
-            <input [(ngModel)]="exerciceType.name" required ngModel minlength="3" maxlength="50" type="text"
+            <input [(ngModel)]="exerciceType.name" required ngModel minlength="3" maxlength="80" type="text"
                 name="Nom" id="weight" class="form-control" />
         </div>
         <div class="d-flex btn-group mt-2">

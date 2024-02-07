@@ -12,33 +12,21 @@ import { ExerciceService } from 'src/app/services/exercice.service';
 export class ExerciceItemComponent {
   @Input()
   public exercice: Exercice = new Exercice();
-
   @Input()
   isSelected: boolean = false;
-
   @Output()
   checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   @Input()
   public routineId: number | undefined;
 
   constructor(
     private exerciceService: ExerciceService,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   onCheckboxChange(event: any): void {
     this.checkboxChange.emit(event.target.checked);
-  }
-
-  updateStatus(event: any): void {
-    let Observable = this.exerciceService.updateExercice(this.exercice);
-    Observable.subscribe({
-      error: err => {
-        Swal.fire("Erreur lors de la sauvegarde.\nCode d'erreur : " + err, '', 'error')
-      }
-    })
-    this.navigateBack();
   }
 
   onSupprime(): void {

@@ -16,6 +16,8 @@ const routes: Routes = [
   { path: 'routine/edit/:id', component: RoutineEditComponent },
   { path: 'routine/:id', component: RoutineDetailComponent },
   { path: 'routines', component: RoutineListComponent },
+  { path: 'routine/:routineId/exercice/edit/:idExo', component: ExerciceEditComponent },
+  { path: 'routine/:routineId/exercice/:idExo', component: ExerciceDetailComponent, },
   { path: 'exercice/new', component: ExerciceEditComponent },
   { path: 'exercice/edit/:id', component: ExerciceEditComponent },
   { path: 'exercice/:id', component: ExerciceDetailComponent, },

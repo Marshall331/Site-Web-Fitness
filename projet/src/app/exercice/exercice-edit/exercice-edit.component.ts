@@ -4,8 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EtatChargement } from 'src/app/models/chargement';
 import { Exercice } from 'src/app/models/exercice';
 import { ExerciceTypes } from 'src/app/models/exercice-types';
+import { Routine } from 'src/app/models/routine';
 import { ExerciceTypesService } from 'src/app/services/exercice-types.service';
 import { ExerciceService } from 'src/app/services/exercice.service';
+import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -16,15 +18,15 @@ import Swal from 'sweetalert2';
 export class ExerciceEditComponent {
 
   @Input()
-  public routineId: number = 0;
-  @Input()
-  public ajoutDansRoutine: boolean = false;
+  public routineId: number = -1;
   public exercice: Exercice = new Exercice();
   public etatChargement = EtatChargement.ENCOURS;
   public exerciceList!: Exercice[];
   public exerciceTypesList!: ExerciceTypes[];
+  public routinesList: Routine[] = [];
 
   constructor(
+    private routineService: RoutineService,
     private exerciceService: ExerciceService,
     private exerciceTypesService: ExerciceTypesService,
     private router: Router,
@@ -35,7 +37,9 @@ export class ExerciceEditComponent {
   public onSubmit(leFormulaire: NgForm): void {
     if (leFormulaire.valid) {
       let ObservableAction;
-      this.exercice.routineId = this.routineId;
+      if (this.routineId != -1) {
+        this.exercice.routineId = this.routineId;
+      }
       if (this.exercice.id) {
         ObservableAction = this.exerciceService.updateExercice(this.exercice);
       } else {
@@ -64,9 +68,23 @@ export class ExerciceEditComponent {
         this.navigateBack();
       }
     });
-    const id = this.route.snapshot.params['id'];
+    const routine = this.route.snapshot.params['routineId'];
+    if (this.routineId == -1 && routine) {
+      this.routineId = routine;
+    }
+    let observable = this.routineService.getRoutines();
+    observable.subscribe({
+      next: routine => {
+        this.routinesList = routine;
+      },
+      error: err => {
+        Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des routines.', 'error')
+        this.router.navigateByUrl('/routines');
+      }
+    });
+    const id = this.route.snapshot.params['idExo'];
     this.exercice = new Exercice()
-    if (id && !this.ajoutDansRoutine) {
+    if (id && this.routineId) {
       this.exerciceService.getExercice(id).subscribe(
         {
           next: (exo: Exercice) => {
@@ -83,7 +101,7 @@ export class ExerciceEditComponent {
   }
 
   private navigateBack(): void {
-    if (this.ajoutDansRoutine) {
+    if (this.routineId > 0) {
       this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
     } else {
       this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))

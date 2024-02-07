@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class ExerciceDetailComponent {
 
+  public routineId: number = 0;
   public exercice!: Exercice;
   public etatChargement = EtatChargement.ENCOURS;
 
@@ -23,7 +24,11 @@ export class ExerciceDetailComponent {
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params['id'];
+    const routId = this.route.snapshot.params['routineId'];
+    if (this.routineId == 0 && routId) {
+      this.routineId = routId
+    };
+    const id = this.route.snapshot.params['idExo'];
 
     this.exerciceService.getExercice(id).subscribe({
       next: routine => {

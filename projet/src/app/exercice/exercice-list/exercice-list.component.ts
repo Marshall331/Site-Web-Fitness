@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { EtatChargement } from 'src/app/models/chargement';
@@ -25,6 +25,9 @@ export class ExerciceListComponent implements OnInit {
   public exerciceList: Exercice[] = [];
   public exerciceBySearch: Exercice[] = [];
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
+  public nbRepetitionsTotal: number = 0;
+  public nbPoidsTotal: number = 0;
+  public valBarreChargement: number = Math.random() * 100;
 
   constructor(
     private exerciceService: ExerciceService,
@@ -48,15 +51,30 @@ export class ExerciceListComponent implements OnInit {
     observable.subscribe({
       next: exercices => {
         this.exerciceList = exercices;
+        this.exerciceBySearch = this.exerciceList;
+        this.calculerInfosSuppTotal();
         this.subscribeToExercices();
-        this.etatChargement = EtatChargement.FAIT;
+        this.playLoadingAnimation();
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')
         this.navigateBack();
       }
     });
-    this.exerciceBySearch = this.exerciceList;
+  }
+
+  private playLoadingAnimation() {
+    this.valBarreChargement = 100;
+    setTimeout(() => {
+      this.etatChargement = EtatChargement.FAIT;
+    }, 50);
+  }
+
+  private calculerInfosSuppTotal() {
+    this.exerciceList.forEach(exercice => {
+      this.nbRepetitionsTotal += exercice.repetitions;
+      this.nbPoidsTotal += exercice.weight;
+    })
   }
 
   updateRecherche($event: Event) {
@@ -118,6 +136,7 @@ export class ExerciceListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
+        this.valBarreChargement = Math.random() * 100;
         this.etatChargement = EtatChargement.ENCOURS;
         this.deleteExerciceRecursively();
       } else if (result.isDenied) {
@@ -139,8 +158,8 @@ export class ExerciceListComponent implements OnInit {
         },
         complete: () => {
           if (this.selectedExercicesIds.length == 0) {
-            this.etatChargement = EtatChargement.FAIT;
-            Swal.fire('Tous les exercices ont été supprimés avec succès !', '', 'success');
+            this.playLoadingAnimation();
+            Swal.fire('Exercices supprimés !', '', 'success');
             this.navigateBack();
           } else {
             this.deleteExerciceRecursively();

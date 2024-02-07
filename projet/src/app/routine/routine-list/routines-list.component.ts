@@ -5,7 +5,6 @@ import { EtatChargement } from 'src/app/models/chargement';
 import { EtatRoutine, Routine } from 'src/app/models/routine';
 import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -20,13 +19,14 @@ export class RoutineListComponent implements OnInit {
   public selectedRoutinesStates: Map<number, boolean> = new Map<number, boolean>();
   public selectedRoutinesIds: number[] = [];
   public etatChoisi: string;
-  public etatChoisiSelection: string;
+  public etatChoisiSelection: string = "";
   public recherche: string = "";
   public routines!: Observable<Routine[]>;
   public routinesList: Routine[] = [];
   public routinesBySearch: Routine[] = [];
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
   readonly etatRoutine = EtatRoutine;
+  public valBarreChargement!: number;
 
   constructor(
     private routineService: RoutineService,
@@ -34,18 +34,17 @@ export class RoutineListComponent implements OnInit {
   ) {
     this.etatChoisi = sessionStorage['choixEtat'] as EtatRoutine || "tout";
     this.recherche = sessionStorage['rechercheRoutine'] || "";
-    this.etatChoisiSelection = "tout";
   }
 
   ngOnInit(): void {
-    this.etatChargement = EtatChargement.ENCOURS;
+    this.playStartProgressBar();
     this.routines = this.routineService.getRoutines();
     this.routines.subscribe({
       next: routine => {
         this.routinesList = routine;
         this.routinesBySearch = this.routinesList;
         this.subscribeToRoutines();
-        this.etatChargement = EtatChargement.FAIT;
+        this.playEndProgressBar(EtatChargement.FAIT);
       },
       error: err => {
         Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des routines.', 'error')
@@ -92,98 +91,54 @@ export class RoutineListComponent implements OnInit {
   }
 
 
-  // Nouvelle méthode pour la gestion de la confirmation
-  async confirmUpdate(etatChoisi: EtatRoutine): Promise<boolean> {
-    const result = await Swal.fire({
-      title: `Voulez-vous vraiment passer le statut des routines sélectionnés à l'état: ${etatChoisi} ?`,
+  // Méthode principale mise à jour
+  updateEtatSelection(): void {
+    console.log(this.etatChoisiSelection)
+    Swal.fire({
+      title: 'Passer le statut des routines sélectionnés à l\'état : ' + this.etatChoisiSelection + '?',
       showDenyButton: true,
       confirmButtonText: 'Confirmer',
       denyButtonText: 'Annuler'
-    });
-
-    return result.isConfirmed;
-  }
-
-  // Nouvelle méthode pour la gestion des erreurs
-  handleError(error: any): void {
-    this.etatChargement = EtatChargement.ERREUR;
-    console.error('Erreur lors de la sauvegarde.', error);
-  }
-
-  // Nouvelle méthode pour mettre à jour une routine
-  updateRoutine(routine: Routine, etatChoisi: EtatRoutine): Observable<Routine> {
-    routine.status = etatChoisi;
-    return this.routineService.updateRoutine(routine);
-  }
-
-  // Nouvelle méthode pour mettre à jour l'état de chargement
-  updateLoadingState(error: boolean): void {
-    this.etatChargement = error ? EtatChargement.ERREUR : EtatChargement.FAIT;
-  }
-
-  // Nouvelle méthode pour rediriger vers la page '/routines'
-  navigateToRoutines(): void {
-    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
-  }
-
-  // Nouvelle méthode pour afficher une notification
-  showNotification(error: boolean, errorCode?: any): void {
-    Swal.fire(error ? `Erreur lors de la sauvegarde.\nCode d'erreur : ${errorCode}` : 'Routines modifiées !');
-  }
-
-  // Nouvelle méthode pour gérer la mise à jour de l'état
-  async handleUpdate(etatChoisi: EtatRoutine): Promise<void> {
-    this.etatChargement = EtatChargement.ENCOURS;
-    let error = false;
-
-    for (const id of this.selectedRoutinesIds) {
-      try {
-        const routine = await this.routineService.getRoutine(id).toPromise();
-
-        if (routine && routine.status != etatChoisi) {
-          const observable = this.updateRoutine(routine, etatChoisi);
-
-          try {
-            await observable.toPromise();
-          } catch (err) {
-            error = true;
-            this.handleError(err);
-          }
-        }
-      } catch (err) {
-        error = true;
-        this.handleError(err);
-      }
-    }
-
-    this.updateLoadingState(error);
-    this.navigateToRoutines();
-    this.showNotification(error);
-  }
-
-  // Méthode principale mise à jour
-  updateEtatSelection($event: Event): void {
-    const etatChoisi = $event as any as EtatRoutine;
-
-    this.confirmUpdate(etatChoisi).then(async (isConfirmed) => {
-      if (isConfirmed) {
-        try {
-          await this.handleUpdate(etatChoisi);
-        } catch (error) {
-          this.etatChargement = EtatChargement.ERREUR;
-        }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.playStartProgressBar();
+        this.updateMultipleRoutines(this.etatChoisiSelection as EtatRoutine);
       } else {
-        this.navigateToRoutines();
-        Swal.fire('Action annulée', '', 'info');
+        this.etatChoisiSelection = "";
       }
-    });
+    })
   }
 
+  private updateMultipleRoutines(status: EtatRoutine): void {
+    const id = this.selectedRoutinesIds[0];
+    this.selectedRoutinesIds.splice(0, 1);
+
+    if (id) {
+      this.routinesList.forEach(routine => {
+        if (routine.id === id) {
+          routine.status = status;
+          const deleteObservable = this.routineService.updateRoutine(routine);
+          deleteObservable.subscribe({
+            error: (err) => {
+              Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+            },
+            complete: () => {
+              if (this.selectedRoutinesIds.length == 0) {
+                this.playEndProgressBar(EtatChargement.FAIT);
+                this.redirectToRoutines();
+              } else {
+                this.updateMultipleRoutines(status);
+              }
+            }
+          })
+        }
+      });
+    };
+  }
 
 
   toggleSelectAll() {
     this.selectedRoutinesIds = [];
-
     for (const Routine of this.routinesBySearch) {
       this.selectedRoutinesStates.set(Routine.id, this.selectAllChecked);
       if (this.selectAllChecked) {
@@ -205,28 +160,61 @@ export class RoutineListComponent implements OnInit {
 
   onSupprime(): void {
     Swal.fire({
-      title: 'Voulez-vous réellement supprimer ces tâches ?',
+      title: 'Voulez-vous réellement supprimer ces types d\'exercices ? ?',
       showDenyButton: true,
       confirmButtonText: 'Supprimer',
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.etatChargement = EtatChargement.ENCOURS;
-        let observable = this.routineService.deleteMultipleRoutines(this.selectedRoutinesIds);
-        observable.subscribe({
-          next: () => {
-            this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
-            this.etatChargement = EtatChargement.FAIT;
-            Swal.fire('Routines supprimées !', '', 'success');
-          },
-          error: (err) => {
-            this.etatChargement = EtatChargement.FAIT;
-            Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
-          }
-        });
+        this.playStartProgressBar();
+        this.deletePlusieursExerciceType();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
       }
     });
+  }
+
+  private deletePlusieursExerciceType(): void {
+    const id = this.selectedRoutinesIds[0];
+    this.selectedRoutinesIds.splice(0, 1);
+
+    if (id) {
+      const deleteObservable = this.routineService.deleteRoutine(id);
+      deleteObservable.subscribe({
+        error: (err) => {
+          Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+        },
+        complete: () => {
+          if (this.selectedRoutinesIds.length == 0) {
+            this.playEndProgressBar(EtatChargement.FAIT).then(() => {
+              Swal.fire('Types d\'exercices supprimés !', '', 'success');
+              this.redirectToRoutines();
+            });
+          } else {
+            this.deletePlusieursExerciceType();
+          }
+        }
+      })
+    };
+  }
+
+  // Nouvelle méthode pour rediriger vers la page '/routines'
+  redirectToRoutines(): void {
+    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
+  }
+
+  private playEndProgressBar(loadingState: EtatChargement): Promise<void> {
+    return new Promise((resolve) => {
+      this.valBarreChargement = 100;
+      setTimeout(() => {
+        this.etatChargement = loadingState;
+        resolve();
+      }, 50);
+    });
+  }
+
+  private playStartProgressBar() {
+    this.valBarreChargement = Math.random() * 100;
+    this.etatChargement = EtatChargement.ENCOURS;
   }
 }

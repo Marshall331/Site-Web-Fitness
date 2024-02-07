@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable, forkJoin } from 'rxjs';
 import { Routine } from '../models/routine';
+import { ExerciceService } from './exercice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class RoutineService {
   readonly routineAPI = environment.apiUrl + "/routines"
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private exerciceService : ExerciceService
   ) { }
 
   getRoutines(): Observable<Routine[]> {
@@ -31,8 +33,9 @@ export class RoutineService {
     return this.http.put<Routine>(this.routineAPI + '/' + routine.id, routine)
   }
 
-  deleteRoutine(routine: Routine): Observable<Routine> {
-    return this.http.delete<Routine>(this.routineAPI + '/' + routine.id)
+  deleteRoutine(id: number): Observable<Routine> {
+    this.exerciceService.deleteExercicesByRoutine(id);
+    return this.http.delete<Routine>(this.routineAPI + '/' + id)
   }
 
   deleteMultipleRoutines(routinesIds: number[]): Observable<void[]> {
