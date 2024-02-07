@@ -93,7 +93,6 @@ export class RoutineListComponent implements OnInit {
 
   // Méthode principale mise à jour
   updateEtatSelection(): void {
-    console.log(this.etatChoisiSelection)
     Swal.fire({
       title: 'Passer le statut des routines sélectionnés à l\'état : ' + this.etatChoisiSelection + '?',
       showDenyButton: true,

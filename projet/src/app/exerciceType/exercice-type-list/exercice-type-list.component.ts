@@ -150,5 +150,4 @@ export class ExerciceTypeListComponent implements OnInit {
       this.etatChargement = EtatChargement.FAIT;
     }, 50);
   }
-
 }
