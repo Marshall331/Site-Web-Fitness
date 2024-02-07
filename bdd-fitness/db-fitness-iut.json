@@ -43,6 +43,13 @@
       "name": "Étirements des bras",
       "repetitions": 1,
       "weight": 0
+    },
+    {
+      "id": 7,
+      "routineId": 3,
+      "name": "dzaaz",
+      "repetitions": 0,
+      "weight": 0
     }
   ],
   "exerciseTypes": [
