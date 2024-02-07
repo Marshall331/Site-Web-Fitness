@@ -108,6 +108,12 @@ export class RoutineListComponent implements OnInit {
     })
   }
 
+  private filterRoutinesToUpdate(status: EtatRoutine) {
+    this.selectedRoutinesIds.forEach(id => {
+
+    })
+  }
+
   private updateMultipleRoutines(status: EtatRoutine): void {
     const id = this.selectedRoutinesIds[0];
     this.selectedRoutinesIds.splice(0, 1);
@@ -115,21 +121,24 @@ export class RoutineListComponent implements OnInit {
     if (id) {
       this.routinesList.forEach(routine => {
         if (routine.id === id) {
-          routine.status = status;
-          const deleteObservable = this.routineService.updateRoutine(routine);
-          deleteObservable.subscribe({
-            error: (err) => {
-              Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
-            },
-            complete: () => {
-              if (this.selectedRoutinesIds.length == 0) {
-                this.playEndProgressBar(EtatChargement.FAIT);
-                this.redirectToRoutines();
-              } else {
-                this.updateMultipleRoutines(status);
+          // if (routine.status != status) {
+            routine.status = status;
+            const deleteObservable = this.routineService.updateRoutine(routine);
+            deleteObservable.subscribe({
+              error: (err) => {
+                Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+              },
+              complete: () => {
+                if (this.selectedRoutinesIds.length == 0) {
+                  this.playEndProgressBar(EtatChargement.FAIT);
+                  this.redirectToRoutines();
+                  return;
+                } else {
+                  this.updateMultipleRoutines(status);
+                }
               }
-            }
-          })
+            })
+          // }
         }
       });
     };
@@ -186,7 +195,7 @@ export class RoutineListComponent implements OnInit {
         complete: () => {
           if (this.selectedRoutinesIds.length == 0) {
             this.playEndProgressBar(EtatChargement.FAIT).then(() => {
-              Swal.fire('Types d\'exercices supprimés !', '', 'success');
+              Swal.fire('Routines supprimées !', '', 'success');
               this.redirectToRoutines();
             });
           } else {

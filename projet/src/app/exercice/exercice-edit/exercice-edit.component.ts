@@ -18,12 +18,14 @@ import Swal from 'sweetalert2';
 export class ExerciceEditComponent {
 
   @Input()
+  public isAddingInRoutine: boolean = false;
+  @Input()
   public routineId: number = -1;
   public exercice: Exercice = new Exercice();
-  public etatChargement = EtatChargement.ENCOURS;
   public exerciceList!: Exercice[];
   public exerciceTypesList!: ExerciceTypes[];
   public routinesList: Routine[] = [];
+  public etatChargement = EtatChargement.ENCOURS;
 
   constructor(
     private routineService: RoutineService,
@@ -72,6 +74,7 @@ export class ExerciceEditComponent {
     if (this.routineId == -1 && routine) {
       this.routineId = routine;
     }
+    console.log(this.routineId)
     let observable = this.routineService.getRoutines();
     observable.subscribe({
       next: routine => {

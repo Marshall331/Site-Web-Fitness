@@ -5,8 +5,9 @@
             <div class="card-header">#{{ exercice.id }} {{ exercice.name }}</div>
             <p class="card-text" style="text-align: center">
                 Répétitions : {{ exercice.repetitions }} <br>
-                Poids : {{exercice.weight}} kg <br>
-                &nbsp;&nbsp;Utilisé dans la routine <a href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a>&nbsp;&nbsp;<br>
+                Poids : {{exercice.weight}} kg
+                <ng-container *ngIf="routineId == 0"><br>&nbsp;&nbsp;Utilisé dans la routine <a
+                        href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></ng-container>&nbsp;&nbsp;<br>
             </p>
         </div>
         <!-- <button class="btn btn-outline-dark button" routerLink="/exercice/edit/{{ exercice.id }}">

@@ -1,7 +1,8 @@
 <li class="list-group-item bg-">
     <div class="d-flex justify-content-between">
         <p>#{{exercice.id}} {{ exercice.name }} | Répétitions : {{exercice.repetitions}} | Poids : {{exercice.weight}}
-            kg | Routine <a href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></p>
+            kg <ng-container *ngIf="routineId == 0">| Routine <a
+                    href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></ng-container></p>
         <div class="d-flex justify-content-end">
             <ng-container *ngIf="routineId == 0; else routineExoDetailLien">
                 <button class="btn btn-outline-dark" [routerLink]="'/exercice/' + exercice.id">

@@ -21,12 +21,12 @@
   <a style="font-size: 18px; border-radius: 5px;" (click)="showExerciceAddForm()" class="btn btn-outline-primary">
     <i class="fa-solid fa-plus"></i>
     Ajouter un exercice</a>
-    <div>
-      <ng-container *ngIf="showExerciceEdit">
-        <br><app-exercice-edit [routineId]="routine.id" ></app-exercice-edit>
-      </ng-container>
-    </div>
-     
+  <div>
+    <ng-container *ngIf="showExerciceEdit">
+      <br><app-exercice-edit [routineId]="routine.id" [isAddingInRoutine]="true"></app-exercice-edit>
+    </ng-container>
+  </div>
+
   <app-exercice-list [routineId]="routine.id"></app-exercice-list>
   <hr>
   <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des routines</a>

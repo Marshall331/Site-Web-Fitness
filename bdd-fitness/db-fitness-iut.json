@@ -1,10 +1,31 @@
 {
   "routines": [
     {
+      "id": 1,
+      "name": "Routine Matinale",
+      "description": "Routine pour réveiller le corps et l'esprit.",
+      "creationDate": "2024-01-15",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "name": "Force du code",
+      "description": "Puissance algorithmique et tonus binaire.",
+      "creationDate": "2024-02-01",
+      "status": "active"
+    },
+    {
       "id": 3,
       "name": "Routine de Flexibilité",
       "description": "Augmente la flexibilité et réduit le stress.",
       "creationDate": "2024-02-04",
+      "status": "active"
+    },
+    {
+      "id": 4,
+      "name": "Cardio Intensif",
+      "description": "Séance de cardio pour améliorer l'endurance et brûler des calories.",
+      "creationDate": "2024-02-10",
       "status": "active"
     },
     {
@@ -20,14 +41,105 @@
       "description": "Exercices pour améliorer la mobilité et l'équilibre.",
       "creationDate": "2024-03-01",
       "status": "active"
+    },
+    {
+      "id": 7,
+      "name": "Endurance Musculaire",
+      "description": "Renforcement de l'endurance des principaux groupes musculaires.",
+      "creationDate": "2024-03-10",
+      "status": "active"
+    },
+    {
+      "id": 8,
+      "name": "Défi du Guerrier",
+      "description": "Routine avancée pour tester les limites de force et d'endurance.",
+      "creationDate": "2024-03-20",
+      "status": "active"
+    },
+    {
+      "id": 9,
+      "name": "Relaxation Profonde",
+      "description": "Exercices de relaxation pour réduire le stress et améliorer le sommeil.",
+      "creationDate": "2024-04-01",
+      "status": "active"
+    },
+    {
+      "id": 10,
+      "name": "zzzzzzzz",
+      "description": "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+      "creationDate": "2024-02-07T23:37:15.323Z",
+      "status": "inactive"
     }
   ],
   "exercises": [
+    {
+      "id": 3,
+      "routineId": "9",
+      "name": "Pompes Binaires",
+      "repetitions": 10,
+      "weight": 50
+    },
+    {
+      "id": 4,
+      "routineId": 2,
+      "name": "Rotation d'Algorithme",
+      "repetitions": 8,
+      "weight": 40
+    },
+    {
+      "id": 5,
+      "routineId": 3,
+      "name": "Sprint de Compilation",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 6,
+      "routineId": 3,
+      "name": "Étirements des bras",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 7,
+      "routineId": 3,
+      "name": "Yoga",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 8,
+      "routineId": 4,
+      "name": "Course sur place",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 9,
+      "routineId": 4,
+      "name": "Jumping Jacks",
+      "repetitions": 30,
+      "weight": 0
+    },
     {
       "id": 10,
       "routineId": 5,
       "name": "Sprints",
       "repetitions": 10,
+      "weight": 0
+    },
+    {
+      "id": 11,
+      "routineId": 5,
+      "name": "Cônes d'agilité",
+      "repetitions": 3,
+      "weight": 0
+    },
+    {
+      "id": 12,
+      "routineId": 6,
+      "name": "Yoga - Pose du guerrier",
+      "repetitions": 1,
       "weight": 0
     },
     {
@@ -38,64 +150,63 @@
       "weight": 0
     },
     {
+      "id": 14,
+      "routineId": 7,
+      "name": "Cyclisme",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 15,
+      "routineId": 7,
+      "name": "Rameur",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 16,
+      "routineId": 8,
+      "name": "Soulevé de Terre",
+      "repetitions": 5,
+      "weight": 60
+    },
+    {
+      "id": 17,
+      "routineId": 8,
+      "name": "Push-ups avec claque",
+      "repetitions": 20,
+      "weight": 0
+    },
+    {
+      "id": 18,
+      "routineId": 9,
+      "name": "Méditation",
+      "repetitions": 1,
+      "weight": 0
+    },
+    {
+      "id": 19,
+      "routineId": 9,
+      "name": "Étirements doux",
+      "repetitions": 5,
+      "weight": 0
+    },
+    {
+      "id": 20,
+      "routineId": 1,
+      "name": "Cyclisme",
+      "repetitions": 0,
+      "weight": 0
+    },
+    {
       "id": 21,
-      "routineId": 3,
-      "name": "Bicycle Crunches",
-      "repetitions": 0,
-      "weight": 0
-    },
-    {
-      "id": 28,
       "routineId": "5",
-      "name": "Bird Dog",
-      "repetitions": 0,
-      "weight": 0
-    },
-    {
-      "id": 29,
-      "routineId": "6",
-      "name": "Bear Crawls",
+      "name": "Flutter Kicks",
       "repetitions": 0,
       "weight": 0
     }
   ],
   "exerciseTypes": [
-    {
-      "id": 1,
-      "name": "Arm Circles"
-    },
-    {
-      "id": 2,
-      "name": "Bear Crawls"
-    },
-    {
-      "id": 3,
-      "name": "Bench Press"
-    },
-    {
-      "id": 4,
-      "name": "Bicep Curls"
-    },
-    {
-      "id": 5,
-      "name": "Bicycle Crunches"
-    },
-    {
-      "id": 6,
-      "name": "Bird Dog"
-    },
-    {
-      "id": 7,
-      "name": "Box Jumps"
-    },
-    {
-      "id": 8,
-      "name": "Burpees"
-    },
-    {
-      "id": 9,
-      "name": "Calf Raises"
-    },
     {
       "id": 10,
       "name": "Chest Fly"

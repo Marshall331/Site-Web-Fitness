@@ -39,11 +39,11 @@
     Ajouter un exercice</a>
     <div>
       <ng-container *ngIf="showExerciceEdit">
-        <br><app-exercice-edit [routineId]="routine.id" ></app-exercice-edit>
+        <br><app-exercice-edit [routineId]="routine.id" [isAddingInRoutine]="true" ></app-exercice-edit>
       </ng-container>
     </div>
      
-    <app-exercice-list [routineId]="routine.id"></app-exercice-list>
+    <app-exercice-list [routineId]="routine.id"  ></app-exercice-list>
   <hr /></ng-container>
   <a routerLink="/routines" class="btn btn-outline-primary">Retour à la liste des routines</a>
 </div><br><br>

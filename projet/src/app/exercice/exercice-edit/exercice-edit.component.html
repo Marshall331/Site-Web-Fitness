@@ -41,13 +41,13 @@
       <button class="btn btn-outline-success" type="submit" [disabled]="!formulaire.valid">
         {{ exercice.id === 0 ? "Créer" : "Modifier" }}
       </button>
-      <ng-container *ngIf="routineId == -1; else retournerVersRoutine">
+      <ng-container *ngIf="!isAddingInRoutine && routineId == -1">
         <a routerLink="/exercices" class="btn btn-outline-danger">Annuler</a>
       </ng-container>
 
-      <ng-template #retournerVersRoutine>
+      <ng-container *ngIf="!isAddingInRoutine && routineId != -1">
         <a [routerLink]="'/routine/' + routineId" class="btn btn-outline-danger">Annuler</a>
-      </ng-template>
+      </ng-container>
       
     </div>
   </form>
