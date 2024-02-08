@@ -22,7 +22,7 @@ export class ExerciceTypeListComponent implements OnInit {
   public exerciceTypesList: ExerciceTypes[] = [];
   public exerciceTypesBySearch: ExerciceTypes[] = [];
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
-  public valBarreChargement: number = Math.random() * 100;
+  public valBarreChargement!: number;
 
   constructor(
     private exerciceTypeService: ExerciceTypesService,
@@ -32,17 +32,19 @@ export class ExerciceTypeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.startLoadingAnimation();
     let observable;
     observable = this.exerciceTypeService.getExercicesTypes();
     observable.subscribe({
       next: exercicesType => {
         this.exerciceTypesList = exercicesType;
         this.subscribeToExercicesTypes();
-        this.playLoadingAnimation();
+        this.playEndProgressBar(EtatChargement.FAIT);
       },
       error: err => {
-        Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des types d\'exercices.', 'error')
-        this.navigateBack();
+        this.playEndProgressBar(EtatChargement.ERREUR).then(() => {
+          Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des types d\'exercices.', 'error')
+        });
       }
     });
     this.exerciceTypesBySearch = this.exerciceTypesList;
@@ -53,7 +55,6 @@ export class ExerciceTypeListComponent implements OnInit {
     this.recherche = $event.toString();
     sessionStorage['rechercheExerciceType'] = this.recherche;
     this.subscribeToExercicesTypes();
-    console.log(this.selectedExercicesTypesIds)
 
   }
 
@@ -108,8 +109,7 @@ export class ExerciceTypeListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.valBarreChargement = Math.random() * 100;
-        this.etatChargement = EtatChargement.ENCOURS;
+        this.startLoadingAnimation();
         this.deletePlusieursExerciceType();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
@@ -118,21 +118,20 @@ export class ExerciceTypeListComponent implements OnInit {
   }
 
   private deletePlusieursExerciceType(): void {
-
     const id = this.selectedExercicesTypesIds[0];
     this.selectedExercicesTypesIds.splice(0, 1);
-
     if (id) {
       const deleteObservable = this.exerciceTypeService.deleteExerciceTypes(id);
       deleteObservable.subscribe({
         error: (err) => {
-          Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+          this.playEndProgressBar(EtatChargement.ERREUR);
         },
         complete: () => {
           if (this.selectedExercicesTypesIds.length == 0) {
-            this.playLoadingAnimation();
-            Swal.fire('Types d\'exercices supprimés !', '', 'success');
-            this.navigateBack();
+            this.playEndProgressBar(EtatChargement.FAIT).then(() => {
+              Swal.fire('Types d\'exercices supprimés !', '', 'success');
+              this.redirectToExercicesTypes();
+            });
           } else {
             this.deletePlusieursExerciceType();
           }
@@ -140,14 +139,23 @@ export class ExerciceTypeListComponent implements OnInit {
       })
     };
   }
-  private navigateBack(): void {
+  // Nouvelle méthode pour rediriger vers la page '/routines'
+  private redirectToExercicesTypes(): void {
     this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('exercicestypes'));
   }
 
-  private playLoadingAnimation() {
-    this.valBarreChargement = 100;
-    setTimeout(() => {
-      this.etatChargement = EtatChargement.FAIT;
-    }, 50);
+  private playEndProgressBar(loadingState: EtatChargement): Promise<void> {
+    return new Promise((resolve) => {
+      this.valBarreChargement = 100;
+      setTimeout(() => {
+        this.etatChargement = loadingState;
+        resolve();
+      }, 50);
+    });
+  }
+
+  private startLoadingAnimation() {
+    this.valBarreChargement = Math.random() * 100;
+    this.etatChargement = EtatChargement.ENCOURS;
   }
 }

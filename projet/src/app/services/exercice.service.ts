@@ -56,15 +56,4 @@ export class ExerciceService {
   deleteExercicesByRoutine(routineId: number): Observable<Exercice[]> {
     return this.http.delete<Exercice[]>(this.ExerciceAPI + '?routineId=' + routineId);
   }
-
-  // deleteMultipleExercices(ExercicesIds: number[]): Observable<Exercice[]> {
-  //   const deleteRequests: Observable<Exercice>[] = [];
-
-  //   ExercicesIds.forEach(ExercicesIds => {
-  //     return this.deleteExercice(ExercicesIds);
-  //   });
-
-  //   console.log(deleteRequests)
-  //   return forkJoin(deleteRequests);
-  // }
 }

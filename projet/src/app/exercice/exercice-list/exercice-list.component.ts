@@ -27,21 +27,25 @@ export class ExerciceListComponent implements OnInit {
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
   public nbRepetitionsTotal: number = 0;
   public nbPoidsTotal: number = 0;
-  public valBarreChargement: number = Math.random() * 100;
+  public valBarreChargement!: number;
+  public selectionChoice: String = "";
+  public filterChoosen: string;
 
   constructor(
     private exerciceService: ExerciceService,
     private router: Router,
   ) {
+    this.filterChoosen = sessionStorage['filtreExercice'] || "tout";
     this.recherche = sessionStorage['rechercheExercice'] || "";
   }
 
   ngOnInit(): void {
+    this.startLoadingAnimation();
     this.exercices = this.exerciceService.getExercices();
     this.getExercicesById(this.routineId);
   }
 
-  getExercicesById(id: number): void {
+  private getExercicesById(id: number): void {
     let observable;
     if (this.routineId == 0) {
       observable = this.exerciceService.getExercices();
@@ -54,20 +58,71 @@ export class ExerciceListComponent implements OnInit {
         this.exerciceBySearch = this.exerciceList;
         this.calculerInfosSuppTotal();
         this.subscribeToExercices();
-        this.playLoadingAnimation();
+        this.playEndProgressBar(EtatChargement.FAIT);
       },
       error: err => {
-        Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')
-        this.navigateBack();
+        this.playEndProgressBar(EtatChargement.ERREUR).then(() => {
+          Swal.fire('Erreur', 'Une erreur est survenue lors de la récupération des exercices.', 'error')
+        });
       }
     });
   }
 
-  private playLoadingAnimation() {
-    this.valBarreChargement = 100;
-    setTimeout(() => {
-      this.etatChargement = EtatChargement.FAIT;
-    }, 50);
+  updateEtatSelection(): void {
+    Swal.fire({
+      title: 'Passer le statut des exercices sélectionnés à l\'état : ' + this.selectionChoice + '?',
+      showDenyButton: true,
+      confirmButtonText: 'Confirmer',
+      denyButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.startLoadingAnimation();
+        if (this.selectionChoice === "fait") {
+          this.updateExercicesDone(true);
+        } else {
+          this.updateExercicesDone(false);
+        }
+      }
+      this.selectionChoice = "";
+    });
+  }
+
+  updateFilter($event: Event) {
+    this.filterChoosen = $event as unknown as string;
+    sessionStorage['filtreExercice'] = this.filterChoosen;
+    this.subscribeToExercices();
+  }
+
+  private updateExercicesDone(shouldAdd: boolean) {
+    this.selectedExercicesIds.forEach(id => {
+      this.updateExerciceDoneStatus(shouldAdd, id);
+    });
+    this.playEndProgressBar(EtatChargement.FAIT);
+  }
+
+  private checkDoneStatus(id: number): boolean {
+    let routinesDoneIds = JSON.parse(localStorage.getItem('exerciceDoneIds') || '[]') as number[];
+    const index = routinesDoneIds.indexOf(id);
+    return index == -1;
+  }
+
+  private filterByRecherche(exercicesList: Exercice[]): Exercice[] {
+    return exercicesList.filter(exercice => this.isRechercheMatch(exercice));
+  }
+
+  private updateExerciceDoneStatus(shouldAdd: boolean, exerciceId: number): void {
+    let exercicesDoneIds = JSON.parse(localStorage.getItem('exerciceDoneIds') || '[]') as number[];
+    const index = exercicesDoneIds.indexOf(exerciceId);
+    if (shouldAdd) {
+      if (index === -1) {
+        exercicesDoneIds.push(exerciceId);
+      }
+    } else {
+      if (index !== -1) {
+        exercicesDoneIds.splice(index, 1);
+      }
+    }
+    localStorage.setItem('exerciceDoneIds', JSON.stringify(exercicesDoneIds));
   }
 
   private calculerInfosSuppTotal() {
@@ -81,8 +136,6 @@ export class ExerciceListComponent implements OnInit {
     this.recherche = $event.toString();
     sessionStorage['rechercheExercice'] = this.recherche;
     this.subscribeToExercices();
-    console.log(this.selectedExercicesIds)
-
   }
 
   private subscribeToExercices() {
@@ -94,7 +147,16 @@ export class ExerciceListComponent implements OnInit {
   }
 
   private filtrerExercices(exerciceList: Exercice[]): Exercice[] {
-    return exerciceList.filter(exercice => this.isRechercheMatch(exercice));
+    switch (this.filterChoosen) {
+      case "tout":
+        return this.filterByRecherche(exerciceList);
+      case "fait":
+        return exerciceList.filter(exercice => !this.checkDoneStatus(exercice.id) && this.isRechercheMatch(exercice));
+      case "non fait":
+        return exerciceList.filter(exercice => this.checkDoneStatus(exercice.id) && this.isRechercheMatch(exercice));
+      default:
+        return this.filterByRecherche(exerciceList);
+    }
   }
 
   private isRechercheMatch(exercice: Exercice): boolean {
@@ -136,8 +198,7 @@ export class ExerciceListComponent implements OnInit {
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.valBarreChargement = Math.random() * 100;
-        this.etatChargement = EtatChargement.ENCOURS;
+        this.startLoadingAnimation();
         this.deleteExerciceRecursively();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
@@ -146,21 +207,20 @@ export class ExerciceListComponent implements OnInit {
   }
 
   private deleteExerciceRecursively(): void {
-
     const id = this.selectedExercicesIds[0];
     this.selectedExercicesIds.splice(0, 1);
-
     if (id) {
       const deleteObservable = this.exerciceService.deleteExercice(id);
       deleteObservable.subscribe({
         error: (err) => {
-          Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+          this.playEndProgressBar(EtatChargement.ERREUR);
         },
         complete: () => {
           if (this.selectedExercicesIds.length == 0) {
-            this.playLoadingAnimation();
-            Swal.fire('Exercices supprimés !', '', 'success');
-            this.navigateBack();
+            this.playEndProgressBar(EtatChargement.FAIT).then(() => {
+              Swal.fire('Exercices supprimés !', '', 'success');
+              this.redirectToRightPage();
+            });
           } else {
             this.deleteExerciceRecursively();
           }
@@ -168,11 +228,37 @@ export class ExerciceListComponent implements OnInit {
       })
     };
   }
-  private navigateBack(): void {
+
+  private redirectToRightPage(): void {
     if (this.routineId) {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
+      this.redirectToRoutine();
     } else {
-      this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))
+      this.redirectToExercices();
     }
+  }
+
+  // Nouvelle méthode pour rediriger vers la page '/routines'
+  private redirectToRoutine(): void {
+    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));
+  }
+
+  // Nouvelle méthode pour rediriger vers la page '/routines'
+  private redirectToExercices(): void {
+    this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/exercices'))
+  }
+
+  private playEndProgressBar(loadingState: EtatChargement): Promise<void> {
+    return new Promise((resolve) => {
+      this.valBarreChargement = 100;
+      setTimeout(() => {
+        this.etatChargement = loadingState;
+        resolve();
+      }, 50);
+    });
+  }
+
+  private startLoadingAnimation() {
+    this.valBarreChargement = Math.random() * 100;
+    this.etatChargement = EtatChargement.ENCOURS;
   }
 }

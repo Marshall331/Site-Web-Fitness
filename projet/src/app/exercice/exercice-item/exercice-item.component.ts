@@ -18,11 +18,41 @@ export class ExerciceItemComponent {
   checkboxChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input()
   public routineId: number | undefined;
+  public isExerciceDone!: boolean;
 
   constructor(
     private exerciceService: ExerciceService,
     private router: Router,
   ) {
+  }
+
+  ngOnInit(): void {
+    this.initializeRoutine();
+  }
+
+  private initializeRoutine(): void {
+    const routinesDoneIds = JSON.parse(localStorage.getItem('exerciceDoneIds') || '[]') as number[];
+    const index = routinesDoneIds.indexOf(this.exercice.id);
+    if (index !== -1) {
+      this.isExerciceDone = true;
+    }
+  }
+
+  updateRoutineDoneStatus() {
+    if (this.exercice.id) {
+      const routinesDoneIds = JSON.parse(localStorage.getItem('exerciceDoneIds') || '[]') as number[];
+      const index = routinesDoneIds.indexOf(this.exercice.id);
+      if (index === -1) {
+        routinesDoneIds.push(this.exercice.id);
+        localStorage.setItem('exerciceDoneIds', JSON.stringify(routinesDoneIds));
+        this.isExerciceDone = true;
+      } else {
+        routinesDoneIds.splice(index, 1);
+        localStorage.setItem('exerciceDoneIds', JSON.stringify(routinesDoneIds));
+        this.isExerciceDone = false;
+      }
+      console.log(JSON.parse(localStorage.getItem('exerciceDoneIds') || '[]'))
+    }
   }
 
   onCheckboxChange(event: any): void {

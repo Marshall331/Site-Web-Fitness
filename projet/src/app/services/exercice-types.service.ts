@@ -48,15 +48,4 @@ export class ExerciceTypesService {
   deleteExerciceTypes(ExerciceTypesId: number): Observable<ExerciceTypes> {
     return this.http.delete<ExerciceTypes>(this.ExerciceTypesAPI + '/' + ExerciceTypesId)
   }
-
-  // deleteMultipleExerciceTypess(ExerciceTypessIds: number[]): Observable<ExerciceTypes[]> {
-  //   const deleteRequests: Observable<ExerciceTypes>[] = [];
-
-  //   ExerciceTypessIds.forEach(ExerciceTypessIds => {
-  //     return this.deleteExerciceTypes(ExerciceTypessIds);
-  //   });
-
-  //   console.log(deleteRequests)
-  //   return forkJoin(deleteRequests);
-  // }
 }

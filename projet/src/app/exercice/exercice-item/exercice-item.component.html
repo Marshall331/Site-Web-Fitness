@@ -1,9 +1,24 @@
-<li class="list-group-item bg-">
+<li class="list-group-item bg-secondary">
     <div class="d-flex justify-content-between">
         <p>#{{exercice.id}} {{ exercice.name }} | Répétitions : {{exercice.repetitions}} | Poids : {{exercice.weight}}
             kg <ng-container *ngIf="routineId == 0">| Routine <a
-                    href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></ng-container></p>
+                    href="/routine/{{exercice.routineId}}">#{{exercice.routineId}}</a></ng-container></p>
         <div class="d-flex justify-content-end">
+            <ng-container *ngIf="routineId != 0">
+                <button class="btn" [ngClass]="{
+                    'btn-danger': !isExerciceDone,
+                    'btn-success': isExerciceDone,
+                  }" (click)="updateRoutineDoneStatus()">
+                    <div style="min-width: 25px;">
+                        <ng-container *ngIf="!isExerciceDone; else notDoneLogo">
+                            <i class="fa-solid fa-xmark fa-lg"></i>
+                        </ng-container>
+                        <ng-template #notDoneLogo>
+                            <i class="fa-solid fa-check fa-lg"></i>
+                        </ng-template>
+                    </div>
+                </button>&nbsp;
+            </ng-container>
             <ng-container *ngIf="routineId == 0; else routineExoDetailLien">
                 <button class="btn btn-outline-dark" [routerLink]="'/exercice/' + exercice.id">
                     <i class="fa-solid fa-magnifying-glass fa-lg"></i>

@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment.development';
 import { Observable, forkJoin } from 'rxjs';
 import { Routine } from '../models/routine';
 import { ExerciceService } from './exercice.service';
+import { Exercice } from '../models/exercice';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class RoutineService {
 
   constructor(
     private http: HttpClient,
-    private exerciceService : ExerciceService
+    private exerciceService: ExerciceService
   ) { }
 
   getRoutines(): Observable<Routine[]> {

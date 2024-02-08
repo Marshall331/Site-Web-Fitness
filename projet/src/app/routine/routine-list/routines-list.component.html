@@ -1,8 +1,8 @@
 <div *ngIf="etatChargement === 'en cours'" class="d-flex justify-content-center align-items-center vh-100">
   <h3 id="txt-loading">Chargement . . .</h3>
   <div class="progress w-50 custom-height">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-      aria-valuemin="0" aria-valuemax="100" [style.width.%]="valBarreChargement" [style.transition]="'width 0.05s linear'">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0"
+      aria-valuemax="100" [style.width.%]="valBarreChargement" [style.transition]="'width 0.05s linear'">
     </div>
   </div>
 </div>
@@ -27,21 +27,25 @@
   </h2>
   <div class="largeur">
     <div id="container" class="d-inline-flex">
-      <label id="lab-etat" for="choix-etat" class="form-label mt-4">Etat :</label>
-      <select [(ngModel)]="etatChoisi" (ngModelChange)="updateEtat($event)" class="form-select" id="choix-etat">
+      <label id="lab-etat" for="choix-etat" class="form-label mt-4">Filtre :</label>
+      <select [(ngModel)]="filterChoosen" (ngModelChange)="updateFilter($event)" class="form-select" id="choix-etat">
         <option value="tout" selected>tout</option>
         <option *ngFor="let etat of etatRoutine | keyvalue" [value]="etat.value">
           {{ etat.value }}
         </option>
+        <option value="fait">fait</option>
+        <option value="non fait">non fait</option>
       </select>
       <input [(ngModel)]="recherche" (ngModelChange)="updateRecherche($event)" id="search-bar"
         class="form-control me-sm-2" type="search" placeholder="Rechercher une tâche" />
       <label id="lab-etat" for="choix-etat" class="form-label mt-4">Sélection :</label>
-      <select [(ngModel)]="etatChoisiSelection" ngModel (ngModelChange)="updateEtatSelection()" [disabled]="this.selectedRoutinesIds.length < 1"
-        class="form-select" id="choix-etat">
+      <select [(ngModel)]="selectionChoice" (ngModelChange)="updateEtatSelection()"
+        [disabled]="this.selectedRoutinesIds.length < 1" class="form-select" id="choix-etat">
         <option *ngFor="let etat of etatRoutine | keyvalue">
           {{ etat.value }}
         </option>
+        <option value="fait">fait</option>
+        <option value="non fait">non fait</option>
       </select>
       <div class="right-margin" *ngIf="this.selectedRoutinesIds.length > 0">
         <button class="btn btn-outline-dark" (click)="onSupprime()">

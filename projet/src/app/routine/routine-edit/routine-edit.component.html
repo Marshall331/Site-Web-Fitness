@@ -1,5 +1,9 @@
 <div *ngIf="this.etatChargement == 'fait'">
   <ng-container *ngIf="routine.id === 0; else modifyRoutine">
+    <a id="font-size" routerLink="/routine/new" class="btn btn-outline-primary">
+      <i class="fa-solid fa-plus"></i>
+      Générer ma routine</a>
+    <hr />
     <h2>Nouvelle routine</h2>
   </ng-container>
   <ng-template #modifyRoutine>
