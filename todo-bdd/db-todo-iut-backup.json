@@ -1,0 +1,51 @@
+{
+  "taches": [
+    {
+        "id"  : 3,
+        "nom" : "Se lever tôt",
+        "etat": "terminée",
+        "memo": "Dès que le réveil sonne et ne pas se laisser absorber par mon téléphone portable"
+    },
+    {
+        "id"  : 4,
+        "nom" : "Boire un petit verre d'eau'",
+        "etat": "à faire",
+        "memo": "Pour vous hydrater"
+    },
+    {
+        "id"  : 5,
+        "nom" : "Faire quelques étirements",
+        "etat": "en cours",
+        "memo": "Liste des exercices à complèter ici..."
+    },
+    {
+        "id"  : 8,
+        "nom" : "Partir paisiblement pour l'IUT",
+        "etat": "à faire",
+        "memo": "Sauf le W.E. ;-)"
+    }
+    ]  
+ ,
+  "exercices": [
+    {
+        "id"   : 1,
+        "nom"  : "Squat / jump",
+        "duree": 10
+      },
+      {
+        "id"   : 2,
+        "nom"  : "Chaise dos au mur",
+        "duree": 5
+      },
+      {
+        "id"   : 3,
+        "nom"  : "Fentes dynamiques",
+        "duree": 8
+      },
+      {
+        "id"   : 4,
+        "nom"  : "Crunch Spiderman",
+        "duree": 20
+      }
+    ]
+}

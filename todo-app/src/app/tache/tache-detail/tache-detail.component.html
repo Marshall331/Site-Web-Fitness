@@ -1,0 +1,21 @@
+<h2>Détail de la tâche </h2>
+
+<div class="card mb-3"
+*ngIf="tache"
+[ngClass]="{'border-warning' : tache.etat==etatTache.AFAIRE,
+            'border-info'    : tache.etat==etatTache.ENCOURS,
+            'border-success' : tache.etat==etatTache.TERMINEE}"
+>
+  <div class="card-header">{{tache.nom}}</div>
+  <div class="card-body">
+    <p class="badge"
+    [ngClass]="{'bg-warning' : tache.etat==etatTache.AFAIRE,
+                'bg-info'    : tache.etat==etatTache.ENCOURS,
+                'bg-success' : tache.etat==etatTache.TERMINEE}"
+    >{{tache.etat}}</p>
+    <p class="card-text">{{tache.memo}}</p>
+  </div>
+</div>
+<div class="d-flex btn-group mt-2">
+  <a routerLink="/taches" class="btn btn-secondary"> retour à la liste des tâches </a>
+</div>
