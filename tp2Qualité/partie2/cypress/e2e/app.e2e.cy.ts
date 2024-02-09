@@ -71,5 +71,5 @@ function dashboardSelecTargetHero() {
     cy.contains(targetHero).click();
     // Ensuring Url routed properly
     cy.url().should('include', '/detail/15');
-    cy.url().should('eq', 'http://localhost:4200/detail/15');
+    cy.url().should('eq', '/');
 }
