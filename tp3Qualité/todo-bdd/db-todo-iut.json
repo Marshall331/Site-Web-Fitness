@@ -1,15 +1,9 @@
 {
   "taches": [
     {
-      "id": 3,
-      "nom": "Se lever tôt",
-      "etat": "à faire",
-      "memo": "Dès que le réveil sonne et ne pas se laisser absorber par mon téléphone portable"
-    },
-    {
       "id": 4,
       "nom": "Boire un petit verre d'eau'",
-      "etat": "terminée",
+      "etat": "à faire",
       "memo": "Pour vous hydrater"
     },
     {
@@ -23,6 +17,12 @@
       "nom": "Partir paisiblement pour l'IUT",
       "etat": "à faire",
       "memo": "Sauf le W.E. ;-)"
+    },
+    {
+      "id": 9,
+      "nom": "newTache",
+      "etat": "à faire",
+      "memo": ""
     }
   ],
   "exercices": [

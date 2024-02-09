@@ -29,13 +29,14 @@ describe('taches page tests', () => {
 describe('Tache item tests', () => {
   const tacheItemId = 3;
   const tacheItemName = "Se lever tôt";
-  const tacheItemStatus = "terminée";
+  const tacheItemStatus = "en cours";
   const tacheItemDesc = "Dès que le réveil sonne et ne pas se laisser absorber par mon téléphone portable";
-  beforeEach(() => {
-    cy.visit('/taches')
-  })
 
-  it('should see item detail', () => {
+  beforeEach(() => {
+    cy.visit('/taches');
+  });
+
+  it('should display item details', () => {
     cy.get('[ng-reflect-router-link="/tache/3"]').click();
     cy.url().should('eq', Cypress.config().baseUrl + 'tache/' + tacheItemId);
     cy.get('body').contains(tacheItemName);
@@ -43,31 +44,79 @@ describe('Tache item tests', () => {
     cy.get('body').contains(tacheItemDesc);
   });
 
-  it('return button in detail should return to taches list', () => {
+  it('should return to taches list when return button is clicked', () => {
     cy.get('[ng-reflect-router-link="/tache/3"]').click();
     cy.get('.btn').click();
     cy.url().should('eq', Cypress.config().baseUrl + 'taches');
-  })
-
-  it('should downgrade a tache', () => {
-    DownGradeTache();
-    cy.get('body').contains(tacheItemName);
-    cy.get('body').contains('en cours');
   });
 
-  it('should updategrade a tache', () => {
+  it('should update tache status to "à faire"', () => {
+    cy.get('[ng-reflect-router-link="/tache/3"]').click();
+    cy.get('body').contains("à faire");
     DownGradeTache();
-    DownGradeTache();
+  });
+
+  it('should update tache status to "terminée"', () => {
     UpgradeTache();
-    cy.get('body').contains(tacheItemName);
-    cy.get('body').contains('en cours');
+    cy.get('[ng-reflect-router-link="/tache/3"]').click();
+    cy.get('body').contains('terminée');
+    DownGradeTache();
+  });
+
+  it('should update tache details', () => {
+    const newTacheName = "Tâche mise à jour";
+    const newTacheStatus = "en cours";
+    const newTacheDesc = "Description mise à jour de la tâche";
+  
+    cy.get('[ng-reflect-router-link="/tache/edit/3"]').click();
+  
+    // Modifier les détails de la tâche
+    cy.get('#nom').clear().type(newTacheName);
+    cy.get('#status').select(newTacheStatus);
+    cy.get('#description').clear().type(newTacheDesc);
+    
+    cy.get('.btn-success').click();
+  
+    cy.get('[ng-reflect-router-link="/tache/3"]').click();
+    cy.get('body').should('contain', newTacheName);
+    cy.get('body').should('contain', newTacheDesc);
   });
   
-  function DownGradeTache(){
-    cy.get(':nth-child(1) > .list-group-item > .justify-content-between > .d-flex > :nth-child(1)').click();
-  } 
 
-  function UpgradeTache(){
-    cy.get(':nth-child(2) > .list-group-item > .justify-content-between > .d-flex > :nth-child(5)').click();
+  it('should delete a tache', () => {
+    cy.get(':nth-child(1) > .list-group-item > .justify-content-between > .d-flex > :nth-child(4)').click();
+    cy.get('body').should('not.contain', tacheItemName);
+  });
+
+  it('should display search bar', () => {
+    cy.get('input.form-control').should('exist');
+  });
+
+  it('search bar should update list on search', () =>{
+    cy.get('input.form-control').type('Se lever tôt');
+  });
+
+  it('should cancel tache creation', () => {
+    cy.get(':nth-child(2) > .btn-group > .btn').click();
+    cy.get('#nom').type('newTache');
+    cy.get('.btn-warning').click();
+    cy.visit('/taches');
+    cy.get('body').should('not.contain', 'newTache');
+  });
+
+  it('should create new tache', () => {
+    cy.get(':nth-child(2) > .btn-group > .btn').click();
+    cy.get('#nom').type('newTache');
+    cy.get('.btn-success').click();
+    cy.visit('/taches');
+    cy.get('body').contains('newTache');
+  });
+
+  function DownGradeTache() {
+    cy.get(':nth-child(1) > .list-group-item > .justify-content-between > .d-flex > :nth-child(1)').click();
+  }
+
+  function UpgradeTache() {
+    cy.get(':nth-child(1) > .list-group-item > .justify-content-between > .d-flex > :nth-child(5)').click();
   }
 });
