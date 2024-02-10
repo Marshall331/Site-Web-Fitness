@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core';
+/**
+ * Composant pour l'édition et l'ajout d'un exercice.
+ */
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EtatChargement } from 'src/app/models/chargement';
@@ -15,39 +18,51 @@ import Swal from 'sweetalert2';
   templateUrl: './exercice-edit.component.html',
   styleUrls: ['./exercice-edit.component.css']
 })
-export class ExerciceEditComponent {
+export class ExerciceEditComponent implements OnInit {
 
   @Input()
-  public isAddingInRoutine: boolean = false;
+  public isAddingInRoutine: boolean = false; // Indique si l'exercice est en cours d'ajout dans une routine
   @Input()
-  public routineId: number = -1;
-  public exercice: Exercice = new Exercice();
-  public exerciceList!: Exercice[];
-  public exerciceTypesList!: ExerciceTypes[];
-  public routinesList: Routine[] = [];
-  public etatChargement = EtatChargement.ENCOURS;
+  public routineId: number = -1; // ID de la routine associée à l'exercice (par défaut à -1)
 
+  public exercice: Exercice = new Exercice(); // Exercice en cours d'édition ou d'ajout
+  public exerciceList!: Exercice[]; // Liste des exercices
+  public exerciceTypesList!: ExerciceTypes[]; // Liste des types d'exercices
+  public routinesList: Routine[] = []; // Liste des routines
+  public etatChargement = EtatChargement.ENCOURS; // État de chargement de la page
+
+  /**
+   * Constructeur de ExerciceEditComponent.
+   * @param routineService Le service pour la gestion des routines
+   * @param exerciceService Le service pour la gestion des exercices
+   * @param exerciceTypesService Le service pour la gestion des types d'exercices
+   * @param router Le routeur pour la navigation
+   * @param route La route pour récupérer les paramètres de la route
+   */
   constructor(
     private routineService: RoutineService,
     private exerciceService: ExerciceService,
     private exerciceTypesService: ExerciceTypesService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {
-  }
+  ) {}
 
+  /**
+   * Méthode appelée lors de la soumission du formulaire d'édition/ajout d'exercice.
+   * @param leFormulaire Le formulaire NgForm contenant les données de l'exercice
+   */
   public onSubmit(leFormulaire: NgForm): void {
     if (leFormulaire.valid) {
-      let ObservableAction;
+      let observableAction;
       if (this.routineId != -1) {
         this.exercice.routineId = this.routineId;
       }
       if (this.exercice.id) {
-        ObservableAction = this.exerciceService.updateExercice(this.exercice);
+        observableAction = this.exerciceService.updateExercice(this.exercice);
       } else {
-        ObservableAction = this.exerciceService.addExercice(this.exercice);
+        observableAction = this.exerciceService.addExercice(this.exercice);
       }
-      ObservableAction.subscribe({
+      observableAction.subscribe({
         next: (exercice: any) => {
           Swal.fire(this.exercice.id ? "Exercice modifié !" : "Exercice ajouté !", '', 'success');
           this.navigateBack();
@@ -59,6 +74,9 @@ export class ExerciceEditComponent {
     }
   }
 
+  /**
+   * Hook de cycle de vie appelé après que Angular ait initialisé toutes les propriétés liées aux données d'une directive.
+   */
   ngOnInit(): void {
     let observableAction = this.exerciceTypesService.getExercicesTypes();
     observableAction.subscribe({
@@ -74,7 +92,6 @@ export class ExerciceEditComponent {
     if (this.routineId == -1 && routine) {
       this.routineId = routine;
     }
-    console.log(this.routineId)
     let observable = this.routineService.getRoutines();
     observable.subscribe({
       next: routine => {
@@ -103,6 +120,9 @@ export class ExerciceEditComponent {
     else { this.etatChargement = EtatChargement.FAIT }
   }
 
+  /**
+   * Méthode privée pour naviguer en arrière après l'édition ou l'ajout de l'exercice.
+   */
   private navigateBack(): void {
     if (this.routineId > 0) {
       this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routine/' + this.routineId));

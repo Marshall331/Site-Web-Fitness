@@ -6,7 +6,6 @@ import { EtatRoutine, Routine } from 'src/app/models/routine';
 import { RoutineService } from 'src/app/services/routine.service';
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-routines-list',
   templateUrl: './routines-list.component.html',
@@ -14,24 +13,67 @@ import Swal from 'sweetalert2';
 })
 export class RoutineListComponent implements OnInit {
 
+  /**
+   * Indique si toutes les routines sont sélectionnées.
+   */
   public selectAllChecked: boolean = false;
+
+  /**
+   * Tableau des identifiants des routines sélectionnées.
+   */
   public selectedRoutinesIds: number[] = [];
+
+  /**
+   * Filtre choisi pour afficher les routines.
+   */
   public filterChoosen: string;
+
+  /**
+   * Chaîne de recherche pour filtrer les routines.
+   */
   public recherche: string = "";
+
+  /**
+   * Observable contenant la liste des routines.
+   */
   public routines!: Observable<Routine[]>;
+
+  /**
+   * Liste des routines récupérées.
+   */
   public routinesList: Routine[] = [];
+
+  /**
+   * Liste des routines filtrées par recherche.
+   */
   public routinesBySearch: Routine[] = [];
+
+  /**
+   * État de chargement des routines.
+   */
   public etatChargement: EtatChargement = EtatChargement.ENCOURS;
+
+  /**
+   * Énumération des états de routine.
+   */
   readonly etatRoutine = EtatRoutine;
+
+  /**
+   * Valeur de la barre de chargement.
+   */
   public valBarreChargement!: number;
+
+  /**
+   * Choix de sélection pour les routines.
+   */
   public selectionChoice: String = "";
 
   constructor(
     private routineService: RoutineService,
     private router: Router,
   ) {
-    this.filterChoosen = sessionStorage['filtreRoutine'] as EtatRoutine || "tout";
-    this.recherche = sessionStorage['rechercheRoutine'] || "";
+    this.filterChoosen = sessionStorage.getItem('filtreRoutine') as EtatRoutine || "tout";
+    this.recherche = sessionStorage.getItem('rechercheRoutine') || "";
   }
 
   ngOnInit(): void {
@@ -52,53 +94,74 @@ export class RoutineListComponent implements OnInit {
     });
   }
 
+  /**
+   * Met à jour le filtre des routines.
+   */
   updateFilter($event: Event) {
     this.filterChoosen = $event as unknown as EtatRoutine;
-    sessionStorage['filtreRoutine'] = this.filterChoosen;
+    sessionStorage.setItem('filtreRoutine', this.filterChoosen);
     this.subscribeToRoutines();
   }
 
+  /**
+   * Met à jour la chaîne de recherche des routines.
+   */
   updateRecherche($event: Event) {
     this.recherche = $event.toString();
-    sessionStorage['rechercheRoutine'] = this.recherche;
+    sessionStorage.setItem('rechercheRoutine', this.recherche);
     this.subscribeToRoutines();
   }
 
+  /**
+   * Souscrit aux routines filtrées.
+   */
   subscribeToRoutines() {
     this.routinesBySearch = this.filtrerRoutines(this.routinesList);
   }
 
+  /**
+   * Vérifie si une routine est sélectionnée.
+   */
   isRoutinesSelected(RoutinesId: number): boolean {
     return this.selectedRoutinesIds.includes(RoutinesId);
   }
 
+  /**
+   * Filtrage des routines en fonction du choix de filtre et de recherche.
+   */
   private filtrerRoutines(routinesList: Routine[]): Routine[] {
     switch (this.filterChoosen) {
       case "tout":
         return this.filterByRecherche(routinesList);
       case "active":
-        return routinesList.filter(routine => routine.status === this.filterChoosen && this.isRechercheMatch(routine));
       case "inactive":
         return routinesList.filter(routine => routine.status === this.filterChoosen && this.isRechercheMatch(routine));
       case "fait":
-        return routinesList.filter(routine => !this.checkDoneStatus(routine.id) && this.isRechercheMatch(routine));
       case "non fait":
-        return routinesList.filter(routine => this.checkDoneStatus(routine.id) && this.isRechercheMatch(routine));
+        return routinesList.filter(routine => this.checkDoneStatus(routine.id) === (this.filterChoosen === "fait") && this.isRechercheMatch(routine));
       default:
         return this.filterByRecherche(routinesList);
     }
   }
 
+  /**
+   * Vérifie si une routine est marquée comme terminée.
+   */
   private checkDoneStatus(id: number): boolean {
     let routinesDoneIds = JSON.parse(localStorage.getItem('routinesDoneIds') || '[]') as number[];
-    const index = routinesDoneIds.indexOf(id);
-    return index == -1;
+    return !routinesDoneIds.includes(id);
   }
 
+  /**
+   * Filtrage des routines par recherche.
+   */
   private filterByRecherche(routinesList: Routine[]): Routine[] {
     return routinesList.filter(routine => this.isRechercheMatch(routine));
   }
 
+  /**
+   * Vérifie si une routine correspond à la recherche.
+   */
   private isRechercheMatch(routine: Routine): boolean {
     const rechercheLower = this.recherche.toLowerCase().replace(/\s/g, '');
     const routineNomSansEspaces = routine.name.toLowerCase().replace(/\s/g, '');
@@ -106,7 +169,9 @@ export class RoutineListComponent implements OnInit {
     return routineNomSansEspaces.includes(rechercheLower);
   }
 
-
+  /**
+   * Met à jour l'état de sélection des routines.
+   */
   updateEtatSelection(): void {
     Swal.fire({
       title: 'Passer le statut des routines sélectionnés à l\'état : ' + this.selectionChoice + '?',
@@ -119,17 +184,16 @@ export class RoutineListComponent implements OnInit {
         if (this.selectionChoice !== "fait" && this.selectionChoice !== "non fait") {
           this.updateMultipleRoutines(this.selectionChoice as EtatRoutine);
         } else {
-          if (this.selectionChoice == "fait") {
-            this.updateRoutinesDone(true);
-          } else {
-            this.updateRoutinesDone(false);
-          }
+          this.updateRoutinesDone(this.selectionChoice === "fait");
         }
       }
       this.selectionChoice = "";
     });
   }
 
+  /**
+ * Met à jour le statut des routines sélectionnées comme terminées ou non terminées.
+ */
   private updateRoutinesDone(shouldAdd: boolean) {
     this.selectedRoutinesIds.forEach(id => {
       this.updateRoutineDoneStatus(shouldAdd, id);
@@ -137,6 +201,9 @@ export class RoutineListComponent implements OnInit {
     this.playEndProgressBar(EtatChargement.FAIT);
   }
 
+  /**
+   * Met à jour le statut de terminé d'une routine.
+   */
   private updateRoutineDoneStatus(shouldAdd: boolean, routineId: number): void {
     let routinesDoneIds = JSON.parse(localStorage.getItem('routinesDoneIds') || '[]') as number[];
     const index = routinesDoneIds.indexOf(routineId);
@@ -152,6 +219,9 @@ export class RoutineListComponent implements OnInit {
     localStorage.setItem('routinesDoneIds', JSON.stringify(routinesDoneIds));
   }
 
+  /**
+   * Met à jour plusieurs routines avec un statut donné.
+   */
   private updateMultipleRoutines(status: EtatRoutine): void {
     const id = this.selectedRoutinesIds[0];
     this.selectedRoutinesIds.splice(0, 1);
@@ -159,10 +229,10 @@ export class RoutineListComponent implements OnInit {
       this.routinesList.forEach(routine => {
         if (routine.id === id) {
           routine.status = status;
-          const deleteObservable = this.routineService.updateRoutine(routine);
-          deleteObservable.subscribe({
+          const updateObservable = this.routineService.updateRoutine(routine);
+          updateObservable.subscribe({
             error: (err) => {
-              Swal.fire("Erreur lors de la suppression.\nCode d'erreur : " + err, '', 'error');
+              Swal.fire("Erreur lors de la mise à jour.\nCode d'erreur : " + err, '', 'error');
             },
             complete: () => {
               if (this.selectedRoutinesIds.length == 0) {
@@ -176,19 +246,24 @@ export class RoutineListComponent implements OnInit {
           })
         }
       });
-    };
+    }
   }
 
-
+  /**
+   * Basculer la sélection de toutes les routines.
+   */
   toggleSelectAll() {
     this.selectedRoutinesIds = [];
-    for (const Routine of this.routinesBySearch) {
+    for (const routine of this.routinesBySearch) {
       if (this.selectAllChecked) {
-        this.selectedRoutinesIds.push(Routine.id);
+        this.selectedRoutinesIds.push(routine.id);
       }
     }
   }
 
+  /**
+   * Gérer le changement de la case à cocher pour une routine.
+   */
   onRoutinesCheckboxChange(isSelected: boolean, routineId: number): void {
     if (isSelected) {
       this.selectedRoutinesIds.push(routineId);
@@ -200,26 +275,31 @@ export class RoutineListComponent implements OnInit {
     }
   }
 
+  /**
+   * Supprimer les routines sélectionnées.
+   */
   onSupprime(): void {
     Swal.fire({
-      title: 'Voulez-vous réellement supprimer ces types d\'exercices ? ?',
+      title: 'Voulez-vous réellement supprimer ces routines ?',
       showDenyButton: true,
       confirmButtonText: 'Supprimer',
       denyButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
         this.startLoadingAnimation();
-        this.deletePlusieursExerciceType();
+        this.deleteMultipleRoutines();
       } else if (result.isDenied) {
         Swal.fire('Suppression annulée', '', 'info');
       }
     });
   }
 
-  private deletePlusieursExerciceType(): void {
+  /**
+   * Supprimer plusieurs routines sélectionnées.
+   */
+  private deleteMultipleRoutines(): void {
     const id = this.selectedRoutinesIds[0];
     this.selectedRoutinesIds.splice(0, 1);
-
     if (id) {
       const deleteObservable = this.routineService.deleteRoutine(id);
       deleteObservable.subscribe({
@@ -236,18 +316,23 @@ export class RoutineListComponent implements OnInit {
               this.redirectToRoutines();
             });
           } else {
-            this.deletePlusieursExerciceType();
+            this.deleteMultipleRoutines();
           }
         }
       })
     };
   }
 
-  // Nouvelle méthode pour rediriger vers la page '/routines'
+  /**
+   * Rediriger vers la page '/routines'.
+   */
   redirectToRoutines(): void {
     this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('/routines'));
   }
 
+  /**
+   * Afficher la barre de chargement à 100% avec un état donné.
+   */
   private playEndProgressBar(loadingState: EtatChargement): Promise<void> {
     return new Promise((resolve) => {
       this.valBarreChargement = 100;
@@ -258,6 +343,9 @@ export class RoutineListComponent implements OnInit {
     });
   }
 
+  /**
+   * Démarrer l'animation de chargement.
+   */
   private startLoadingAnimation() {
     this.valBarreChargement = Math.random() * 100;
     this.etatChargement = EtatChargement.ENCOURS;

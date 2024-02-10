@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 import { ExerciceTypesService } from 'src/app/services/exercice-types.service';
 import { ExerciceTypes } from 'src/app/models/exercice-types';
 
-
 @Component({
   selector: 'app-exercice-type-list',
   templateUrl: './exercice-type-list.component.html',
@@ -50,26 +49,46 @@ export class ExerciceTypeListComponent implements OnInit {
     this.exerciceTypesBySearch = this.exerciceTypesList;
   }
 
-
+  /**
+   * Met à jour la recherche lorsqu'un utilisateur effectue une recherche.
+   * @param $event L'événement de recherche.
+   */
   updateRecherche($event: Event) {
     this.recherche = $event.toString();
     sessionStorage['rechercheExerciceType'] = this.recherche;
     this.subscribeToExercicesTypes();
-
   }
 
+  /**
+   * Souscrit aux types d'exercices en fonction de la recherche et filtre les résultats.
+   */
   private subscribeToExercicesTypes() {
     this.exerciceTypesBySearch = this.filtrerExercices(this.exerciceTypesList);
   }
 
+  /**
+   * Vérifie si un type d'exercice est sélectionné.
+   * @param exerciceId L'identifiant du type d'exercice.
+   * @returns True si le type d'exercice est sélectionné, sinon False.
+   */
   isTaskSelected(exerciceId: number): boolean {
     return this.selectedExercicesTypesIds.includes(exerciceId);
   }
 
+  /**
+   * Filtre les types d'exercices en fonction de la recherche.
+   * @param exerciceList La liste des types d'exercices à filtrer.
+   * @returns La liste des types d'exercices filtrés.
+   */
   private filtrerExercices(exerciceList: ExerciceTypes[]): ExerciceTypes[] {
     return exerciceList.filter(exercice => this.isRechercheMatch(exercice));
   }
 
+  /**
+   * Vérifie si un type d'exercice correspond à la recherche.
+   * @param exercice Le type d'exercice à vérifier.
+   * @returns True si le type d'exercice correspond à la recherche, sinon False.
+   */
   private isRechercheMatch(exercice: ExerciceTypes): boolean {
     const rechercheLower = this.recherche.toLowerCase().replace(/\s/g, '');
     const exerciceNomSansEspaces = exercice.name.toLowerCase().replace(/\s/g, '');
@@ -79,6 +98,9 @@ export class ExerciceTypeListComponent implements OnInit {
     );
   }
 
+  /**
+   * Bascule la sélection de tous les types d'exercices.
+   */
   toggleSelectAll() {
     this.selectedExercicesTypesIds = [];
 
@@ -90,6 +112,11 @@ export class ExerciceTypeListComponent implements OnInit {
     }
   }
 
+  /**
+   * Gère le changement de sélection d'un type d'exercice.
+   * @param isSelected Indique si le type d'exercice est sélectionné.
+   * @param exerciceId L'identifiant du type d'exercice.
+   */
   onTaskCheckboxChange(isSelected: boolean, exerciceId: number): void {
     if (isSelected) {
       this.selectedExercicesTypesIds.push(exerciceId);
@@ -101,9 +128,12 @@ export class ExerciceTypeListComponent implements OnInit {
     }
   }
 
+  /**
+   * Supprime les types d'exercices sélectionnés.
+   */
   onSupprime(): void {
     Swal.fire({
-      title: 'Voulez-vous réellement supprimer ces types d\'exercices ? ?',
+      title: 'Voulez-vous réellement supprimer ces types d\'exercices ?',
       showDenyButton: true,
       confirmButtonText: 'Supprimer',
       denyButtonText: 'Annuler'
@@ -136,14 +166,22 @@ export class ExerciceTypeListComponent implements OnInit {
             this.deletePlusieursExerciceType();
           }
         }
-      })
-    };
+      });
+    }
   }
-  // Nouvelle méthode pour rediriger vers la page '/routines'
+
+  /**
+   * Redirige vers la page des types d'exercices après la suppression.
+   */
   private redirectToExercicesTypes(): void {
     this.router.navigateByUrl('/').then(() => this.router.navigateByUrl('exercicestypes'));
   }
 
+  /**
+   * Affiche la barre de progression de chargement.
+   * @param loadingState L'état de chargement.
+   * @returns Une promesse résolue lorsque la barre de progression est complète.
+   */
   private playEndProgressBar(loadingState: EtatChargement): Promise<void> {
     return new Promise((resolve) => {
       this.valBarreChargement = 100;
@@ -154,6 +192,9 @@ export class ExerciceTypeListComponent implements OnInit {
     });
   }
 
+  /**
+   * Initialise l'animation de chargement.
+   */
   private startLoadingAnimation() {
     this.valBarreChargement = Math.random() * 100;
     this.etatChargement = EtatChargement.ENCOURS;

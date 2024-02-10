@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccueilComponent } from './accueil/accueil.component';
 import { RoutineListComponent } from './routine/routine-list/routines-list.component';
 import { RoutineDetailComponent } from './routine/routine-detail/routine-detail.component';
 import { ExerciceDetailComponent } from './exercice/exercice-detail/exercice-detail.component';
@@ -26,7 +25,7 @@ const routes: Routes = [
   { path: 'exercicetype/edit/:id', component: ExerciceTypeEditComponent },
   { path: 'exercicetype/:id', component: ExerciceTypeDetailComponent, },
   { path: 'exercicestypes', component: ExerciceTypeListComponent },
-  { path: '', component: AccueilComponent }
+  { path: '', component: RoutineListComponent }
 ];
 
 @NgModule({

@@ -10,9 +10,6 @@
                         href="/routine/{{exercice.routineId}}">{{exercice.routineId}}</a></ng-container>&nbsp;&nbsp;<br>
             </p>
         </div>
-        <!-- <button class="btn btn-outline-dark button" routerLink="/exercice/edit/{{ exercice.id }}">
-            <i class="fa-solid fa-pen-to-square fa-lg"></i>
-        </button> -->
         <ng-container *ngIf="routineId == 0; else routineExoEditLien">
             <button class="btn btn-outline-dark button" [routerLink]="'/exercice/edit/' + exercice.id">
                 <i class="fa-solid fa-pen-to-square fa-lg"></i>
