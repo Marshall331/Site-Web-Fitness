@@ -130,17 +130,12 @@ export class RoutineListComponent implements OnInit {
    * Filtrage des routines en fonction du choix de filtre et de recherche.
    */
   private filtrerRoutines(routinesList: Routine[]): Routine[] {
-    switch (this.filterChoosen) {
-      case "tout":
-        return this.filterByRecherche(routinesList);
-      case "active":
-      case "inactive":
-        return routinesList.filter(routine => routine.status === this.filterChoosen && this.isRechercheMatch(routine));
-      case "fait":
-      case "non fait":
-        return routinesList.filter(routine => this.checkDoneStatus(routine.id) === (this.filterChoosen === "fait") && this.isRechercheMatch(routine));
-      default:
-        return this.filterByRecherche(routinesList);
+    if (this.filterChoosen === 'active' || this.filterChoosen === 'inactive') {
+      return routinesList.filter(routine => routine.status === this.filterChoosen && this.isRechercheMatch(routine));
+    } else if (this.filterChoosen === 'fait' || this.filterChoosen === 'non fait') {
+      return routinesList.filter(routine => this.checkDoneStatus(routine.id) === (this.filterChoosen === "non fait") && this.isRechercheMatch(routine));
+    } else {
+      return this.filterByRecherche(routinesList);
     }
   }
 
