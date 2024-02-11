@@ -6,7 +6,6 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { MenuComponent } from './menu/menu.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { RoutineListComponent } from './routine/routine-list/routines-list.component';
 import { RoutineItemComponent } from './routine/routine-item/routines-item.component';
 import { RoutineDetailComponent } from './routine/routine-detail/routine-detail.component';
@@ -43,7 +42,6 @@ import { ExerciceTypeEditComponent } from './exerciceType/exercice-type-edit/exe
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot({})
   ],
   providers: [],
   bootstrap: [AppComponent]
