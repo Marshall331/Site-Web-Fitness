@@ -38,11 +38,6 @@
             </ng-container>
             <input [(ngModel)]="recherche" (ngModelChange)="updateRecherche($event)" id="search-bar"
                 class="form-control me-sm-2" type="search" placeholder="Rechercher un exercice" />
-            <div class="right-margin" *ngIf="this.selectedExercicesIds.length > 0">
-                <button class="btn btn-outline-dark" (click)="onSupprime()">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
             <ng-container *ngIf="routineId != 0">
                 <label id="lab-etat" for="choix-etat" class="form-label mt-4">Sélection :</label>
                 <select [(ngModel)]="selectionChoice" (ngModelChange)="updateEtatSelection()"
@@ -51,6 +46,11 @@
                     <option value="non fait">non fait</option>
                 </select>
             </ng-container>
+            <div class="right-margin" *ngIf="this.selectedExercicesIds.length > 0">
+                <button class="btn btn-outline-dark" (click)="onSupprime()">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
             <div id="checkbox" class="checkbox" bis_skin_checked="1">
                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"
                     [(ngModel)]="selectAllChecked" (ngModelChange)="toggleSelectAll()" />

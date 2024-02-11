@@ -73,13 +73,6 @@
       "weight": 12
     },
     {
-      "id": 7,
-      "routineId": 3,
-      "name": "Yoga",
-      "repetitions": 1,
-      "weight": 0
-    },
-    {
       "id": 8,
       "routineId": 4,
       "name": "Course sur place",
