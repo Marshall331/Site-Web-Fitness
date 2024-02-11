@@ -1,9 +1,0 @@
-<div class="personne">
-    <div class="info">
-    Personne n°{{personne.id}} / code {{personne.codeName(personne.nom)}}
-    <button (click)="onChangeId()">modifier</button>
-    </div>
-    <div class="nom" *ngIf="personne.nom==''">Anonyme</div>
-    <div class="nom" *ngIf="personne.nom!=''">{{personne.nom}}</div>
-    <div class="email" *ngIf="personne.email">e-mail : {{personne.email}}
-    </div>
